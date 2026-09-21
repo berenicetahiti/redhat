@@ -1286,19 +1286,31 @@ q.addEventListener('input', () => {
   applyFilter();
 });
 
+function escapeRegex(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+function termMatches(haystack, term){
+  if(!term) return true;
+  try{
+    return new RegExp('\\b' + escapeRegex(term), 'i').test(haystack);
+  }catch(e){
+    return haystack.includes(term);
+  }
+}
+
 function applyFilter(){
   const term = q.value.trim().toLowerCase();
   let shown = 0;
   document.querySelectorAll('section.card').forEach(sec => {
     const inCat = activeCat === 'tous' || sec.dataset.cat === activeCat;
-    const ok = inCat && (!term || sec.dataset.search.includes(term));
+    const ok = inCat && (!term || termMatches(sec.dataset.search, term));
     sec.classList.toggle('hidden', !ok);
     if(ok) shown++;
     // filtrage fin des lignes de commandes
-    sec.querySelectorAll('table.cmds tr').forEach(tr => {
+    const rows = Array.from(sec.querySelectorAll('table.cmds tr'));
+    const secMatchesOnTitle = !term || termMatches(sec.querySelector('h2').textContent.toLowerCase(), term);
+    const anyRowMatches = rows.some(r => termMatches(r.textContent.toLowerCase(), term));
+    rows.forEach(tr => {
       const txt = tr.textContent.toLowerCase();
-      const secMatchesOnTitle = !term || sec.querySelector('h2').textContent.toLowerCase().includes(term);
-      tr.classList.toggle('hidden', !!term && !secMatchesOnTitle && !txt.includes(term) && sec.dataset.search.includes(term) && Array.from(sec.querySelectorAll('table.cmds tr')).some(r => r.textContent.toLowerCase().includes(term)));
+      tr.classList.toggle('hidden', !!term && !secMatchesOnTitle && anyRowMatches && !termMatches(txt, term));
     });
   });
   toc.querySelectorAll('a').forEach(a => {
