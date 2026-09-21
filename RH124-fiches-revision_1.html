@@ -79,6 +79,21 @@ p code,li code{background:var(--code-bg);padding:1px 5px;border-radius:4px;font-
 .hidden{display:none!important}
 #empty{display:none;color:var(--muted);text-align:center;padding:40px 0}
 footer{color:var(--muted);font-size:13px;text-align:center;padding:10px 0 40px}
+.view-actions{display:flex;align-items:center;gap:6px;margin-left:auto}
+.view-btn{appearance:none;border:1px solid var(--line);background:#fff;border-radius:7px;padding:6px 12px;font:inherit;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.view-btn:hover{border-color:var(--accent);color:var(--accent)}
+.view-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+/* Mode compact : aide-mémoire, uniquement les commandes */
+body.compact .brief,
+body.compact .exwrap,
+body.compact .traps,
+body.compact .chap,
+body.compact h3{display:none}
+body.compact section.card{padding:10px 14px;margin-bottom:10px;box-shadow:none}
+body.compact section.card h2{font-size:.95rem;margin:0 0 4px}
+body.compact table.cmds{font-size:12px}
+body.compact table.cmds td{padding:2px 6px}
+body.compact .cmd code{font-size:11.5px;padding:1px 5px}
 @media (max-width:820px){
   .wrap{grid-template-columns:1fr}
   nav.toc{display:none}
@@ -89,9 +104,12 @@ footer{color:var(--muted);font-size:13px;text-align:center;padding:10px 0 40px}
   table.cmds tr:first-child{border-top:0}
 }
 @media print{
-  header.top,nav.toc,button.copy{display:none}
+  header.top,nav.toc,button.copy,.view-actions{display:none}
   .wrap{display:block}
   section.card{break-inside:avoid}
+  body.compact main{column-count:2;column-gap:28px}
+  body.compact section.card{break-inside:avoid;margin-bottom:8px}
+  body.compact .express,body.compact .cat-heading{display:none}
 }
 </style>
 </head>
@@ -143,6 +161,10 @@ footer{color:var(--muted);font-size:13px;text-align:center;padding:10px 0 40px}
     <div class="cat-heading">
       <h2 id="cat-title">Toutes les notions</h2>
       <span class="cat-count" id="cat-count"></span>
+      <div class="view-actions">
+        <button class="view-btn" type="button" id="compact-toggle" aria-pressed="false">Vue compacte</button>
+        <button class="view-btn" type="button" id="print-btn">Imprimer</button>
+      </div>
     </div>
 
     <div id="list"></div>
@@ -1335,6 +1357,21 @@ document.querySelectorAll('.level').forEach(btn => {
     window.scrollTo({top:0, behavior:'smooth'});
   });
 });
+
+const compactToggle = document.getElementById('compact-toggle');
+function setCompact(on){
+  document.body.classList.toggle('compact', on);
+  compactToggle.classList.toggle('active', on);
+  compactToggle.setAttribute('aria-pressed', String(on));
+  compactToggle.textContent = on ? 'Vue détaillée' : 'Vue compacte';
+  try{ localStorage.setItem('rh_compact_mode', on ? '1' : '0'); }catch(e){}
+}
+compactToggle.addEventListener('click', () => setCompact(!document.body.classList.contains('compact')));
+let initialCompact = false;
+try{ initialCompact = localStorage.getItem('rh_compact_mode') === '1'; }catch(e){}
+setCompact(initialCompact);
+
+document.getElementById('print-btn').addEventListener('click', () => window.print());
 
 renderLevel(1);
 </script>
