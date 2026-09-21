@@ -19,8 +19,16 @@ header.top{position:sticky;top:0;z-index:10;background:rgba(250,250,249,.95);bac
 .brand span{color:var(--accent)}
 #q{flex:1;min-width:200px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff}
 #q:focus{outline:2px solid var(--accent);outline-offset:1px}
+.tabs{max-width:1100px;margin:0 auto;padding:0 12px;display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin}
+.tabs::-webkit-scrollbar{height:5px}
+.tabs::-webkit-scrollbar-thumb{background:var(--line);border-radius:99px}
+.tab{appearance:none;border:none;background:transparent;font:inherit;font-size:13.5px;font-weight:600;color:var(--muted);cursor:pointer;padding:10px 14px 9px;white-space:nowrap;border-bottom:3px solid transparent;border-radius:8px 8px 0 0;transition:color .15s,background-color .15s}
+.tab:hover{color:var(--accent);background:var(--accent-soft)}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab .cnt{color:var(--muted);font-weight:500;font-size:11.5px;margin-left:3px}
+.tab.active .cnt{color:var(--accent)}
 .wrap{max-width:1100px;margin:0 auto;padding:0 16px 60px;display:grid;grid-template-columns:230px 1fr;gap:32px}
-nav.toc{position:sticky;top:76px;align-self:start;max-height:calc(100vh - 96px);overflow:auto;padding-top:24px;font-size:14px}
+nav.toc{position:sticky;top:118px;align-self:start;max-height:calc(100vh - 138px);overflow:auto;padding-top:24px;font-size:14px}
 nav.toc a{display:block;padding:4px 8px;border-radius:6px;color:var(--muted);text-decoration:none}
 nav.toc a:hover{background:var(--accent-soft);color:var(--accent)}
 nav.toc .n{display:inline-block;width:22px;color:var(--accent);font-variant-numeric:tabular-nums}
@@ -30,11 +38,16 @@ h1{font-size:1.9rem;line-height:1.2;margin:0 0 6px;letter-spacing:-.02em}
 .express{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:16px 20px;margin-bottom:28px}
 .express h2{margin:0 0 8px;font-size:1.05rem}
 .express ul{margin:0;padding-left:1.1em}
-.express li{margin:3px 0}
-section.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin-bottom:20px}
-section.card h2{margin:0 0 4px;font-size:1.25rem;letter-spacing:-.01em}
+.express li{margin:5px 0}
+.express button.jump{appearance:none;border:none;background:transparent;padding:0;font:inherit;font-weight:700;color:var(--ink);cursor:pointer;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:2px}
+.express button.jump:hover{color:var(--accent);text-decoration-color:var(--accent)}
+.cat-heading{display:flex;align-items:baseline;gap:10px;margin:0 0 16px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.cat-heading h2{margin:0;font-size:1.35rem;letter-spacing:-.01em}
+.cat-heading .cat-count{color:var(--muted);font-size:13.5px}
+section.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:22px;box-shadow:0 1px 2px rgba(20,20,20,.03)}
+section.card h2{margin:0 0 6px;font-size:1.25rem;letter-spacing:-.01em}
 .chap{display:inline-block;font-size:12px;font-weight:600;color:var(--accent);background:var(--accent-soft);border-radius:99px;padding:2px 10px;margin-bottom:8px}
-.brief{margin:6px 0 14px}
+.brief{margin:8px 0 16px;color:#3a3a3e}
 h3{font-size:.8rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:18px 0 8px}
 table.cmds{width:100%;border-collapse:collapse;font-size:14.5px}
 table.cmds td{padding:6px 8px;border-top:1px solid var(--line);vertical-align:top}
@@ -81,6 +94,7 @@ footer{color:var(--muted);font-size:13px;text-align:center;padding:10px 0 40px}
     <div class="brand">RH124 <span>·</span> Fiches de révision</div>
     <input id="q" type="search" placeholder="Rechercher une commande ou une notion (ex. chmod, umask, systemctl…)" aria-label="Rechercher">
   </div>
+  <div class="tabs" id="tabs" role="tablist" aria-label="Catégories"></div>
 </header>
 
 <div class="wrap">
@@ -92,13 +106,18 @@ footer{color:var(--muted);font-size:13px;text-align:center;padding:10px 0 40px}
     <div class="express">
       <h2>Résumé express</h2>
       <ul>
-        <li><strong>Prise en main :</strong> RHEL, le shell Bash, l'aide locale (<code>man</code>), l'assistant IA Lightspeed et l'enregistrement du système chez Red Hat.</li>
-        <li><strong>Fichiers :</strong> arborescence unique depuis <code>/</code>, gestion en ligne de commande, liens, globbing, Vim, redirections et pipes.</li>
-        <li><strong>Sécurité et accès :</strong> utilisateurs, groupes, <code>sudo</code>, mots de passe, permissions (<code>rwx</code>, octal, umask, suid/sgid/sticky).</li>
-        <li><strong>Logiciels et stockage :</strong> RPM et DNF, dépôts BaseOS/AppStream, Flatpak, montage de disques, <code>find</code> et <code>locate</code>.</li>
-        <li><strong>Système en marche :</strong> processus, signaux, jobs, services <code>systemd</code>.</li>
-        <li><strong>Réseau :</strong> TCP/IP, <code>ip</code>, <code>nmcli</code>, nom d'hôte, SSH avec authentification par clé.</li>
+        <li><button class="jump" type="button" data-cat="debuter">Prise en main :</button> RHEL, le shell Bash, l'aide locale (<code>man</code>), l'assistant IA Lightspeed et l'enregistrement du système chez Red Hat.</li>
+        <li><button class="jump" type="button" data-cat="fichiers">Fichiers :</button> arborescence unique depuis <code>/</code>, gestion en ligne de commande, liens, globbing, Vim, redirections et pipes.</li>
+        <li><button class="jump" type="button" data-cat="securite">Sécurité et accès :</button> utilisateurs, groupes, <code>sudo</code>, mots de passe, permissions (<code>rwx</code>, octal, umask, suid/sgid/sticky).</li>
+        <li><button class="jump" type="button" data-cat="logiciels">Logiciels et stockage :</button> RPM et DNF, dépôts BaseOS/AppStream, Flatpak, montage de disques, <code>find</code> et <code>locate</code>.</li>
+        <li><button class="jump" type="button" data-cat="systeme">Système en marche :</button> processus, signaux, jobs, services <code>systemd</code>.</li>
+        <li><button class="jump" type="button" data-cat="reseau">Réseau :</button> TCP/IP, <code>ip</code>, <code>nmcli</code>, nom d'hôte, SSH avec authentification par clé.</li>
       </ul>
+    </div>
+
+    <div class="cat-heading">
+      <h2 id="cat-title">Toutes les notions</h2>
+      <span class="cat-count" id="cat-count"></span>
     </div>
 
     <div id="list"></div>
@@ -111,7 +130,7 @@ footer{color:var(--muted);font-size:13px;text-align:center;padding:10px 0 40px}
 /* Chaque notion : id, chap, titre, brief, exemple (lignes "$ " = commandes copiables), cmds [commande, description], pieges [] */
 const N = [
 {
- id:"contexte", chap:"Chap. 1", titre:"RHEL et l'Open Source",
+ id:"contexte", cat:"debuter", chap:"Chap. 1", titre:"RHEL et l'Open Source",
  brief:"Un logiciel Open Source a un code source que tout le monde peut utiliser, étudier, modifier et partager. Une distribution Linux = noyau Linux + bibliothèques + programmes. RHEL est la distribution Linux commerciale de Red Hat : elle stabilise des projets communautaires pour les proposer avec support en entreprise. Un abonnement Red Hat Developer gratuit donne accès à RHEL pour apprendre.",
  exemple:`$ cat /etc/redhat-release
 $ uname -r
@@ -124,7 +143,7 @@ $ hostnamectl`,
  pieges:["RHEL est la version stabilisée et supportée ; les projets amont (communautaires) évoluent plus vite."]
 },
 {
- id:"bash", chap:"Chap. 2", titre:"Ligne de commande et shell Bash",
+ id:"bash", cat:"debuter", chap:"Chap. 2", titre:"Ligne de commande et shell Bash",
  brief:"Bash interprète les commandes tapées. Syntaxe : <code>commande [options] [arguments]</code>. On y accède via un terminal graphique, une console texte ou SSH. Le confort vient des raccourcis clavier, de la complétion avec Tab et de l'historique.",
  exemple:`$ date +%F
 2026-09-20
@@ -149,7 +168,7 @@ $ sudo !!`,
  pieges:["Linux est sensible à la casse : <code>Fichier</code> et <code>fichier</code> sont deux fichiers différents.","Ctrl+Alt+F-touche permet de basculer entre consoles virtuelles (utile si l'interface graphique est désactivée)."]
 },
 {
- id:"aide", chap:"Chap. 3 et 5", titre:"Obtenir de l'aide (man et Lightspeed)",
+ id:"aide", cat:"debuter", chap:"Chap. 3 et 5", titre:"Obtenir de l'aide (man et Lightspeed)",
  brief:"Les pages <code>man</code> sont la référence locale. Elles sont numérotées par section : 1 = commandes utilisateur, 2 = appels système, 5 = formats de fichiers, 8 = commandes d'administration. L'assistant en ligne de commande RHEL Lightspeed répond à des questions en langage naturel (à installer avec <code>command-line-assistant</code>).",
  exemple:`$ man -k passwd
 passwd (1)   - update user's authentication tokens
@@ -171,7 +190,7 @@ $ c chat "Comment vérifier l'état du service sshd ?"`,
  pieges:["<code>man passwd</code> ouvre la section 1 (la commande) : pour le fichier <code>/etc/passwd</code>, il faut <code>man 5 passwd</code>.","Vérifier toute commande proposée par l'IA (avec <code>man</code> ou <code>--help</code>) avant de l'exécuter, surtout en root."]
 },
 {
- id:"support", chap:"Chap. 4", titre:"Enregistrer un système chez Red Hat",
+ id:"support", cat:"debuter", chap:"Chap. 4", titre:"Enregistrer un système chez Red Hat",
  brief:"Un système enregistré accède au CDN Red Hat (mises à jour, correctifs de sécurité). Le modèle Simple Content Access centralise la gestion dans la Hybrid Cloud Console. Deux outils : <code>rhc</code> (peut aussi activer Red Hat Insights) et <code>subscription-manager</code>. La console web RHEL fait la même chose graphiquement.",
  exemple:`$ sudo rhc connect
 # ou avec une clé d'activation :
@@ -188,7 +207,7 @@ $ sudo subscription-manager register`,
  pieges:["Ces commandes demandent les droits root (<code>sudo</code>).","<code>rhc</code> active Insights par défaut : à désactiver explicitement si ce n'est pas voulu."]
 },
 {
- id:"arbo", chap:"Chap. 6", titre:"Navigation dans l'arborescence",
+ id:"arbo", cat:"fichiers", chap:"Chap. 6", titre:"Navigation dans l'arborescence",
  brief:"Tous les fichiers vivent dans une arborescence inversée unique qui part de la racine <code>/</code>. Chaque répertoire a un rôle : <code>/etc</code> configuration, <code>/home</code> dossiers utilisateurs, <code>/var</code> données variables (logs), <code>/usr</code> logiciels, <code>/boot</code> fichiers de démarrage, <code>/dev</code> périphériques, <code>/tmp</code> temporaire, <code>/root</code> home de root. Un chemin absolu commence par <code>/</code>, un chemin relatif non.",
  exemple:`$ pwd
 /home/student
@@ -213,7 +232,7 @@ $ ls -la ~`,
  pieges:["Un fichier caché commence par un point ; <code>ls</code> ne l'affiche pas sans <code>-a</code>.","<code>.</code> = répertoire courant, <code>..</code> = parent."]
 },
 {
- id:"fichiers", chap:"Chap. 7", titre:"Gérer les fichiers, liens et globbing",
+ id:"fichiers", cat:"fichiers", chap:"Chap. 7", titre:"Gérer les fichiers, liens et globbing",
  brief:"Créer, copier, déplacer, supprimer. Les liens permettent à plusieurs noms de pointer vers les mêmes données : lien matériel (même inode) ou lien symbolique (raccourci vers un chemin). Le shell développe les motifs (globbing) avant d'exécuter la commande.",
  exemple:`$ mkdir -p Videos/season{1..2}
 $ touch tv_season{1..2}_episode{1..6}.ogg
@@ -238,7 +257,7 @@ $ ls -li fichier lien.hard`,
  pieges:["<code>rm -r</code> n'a pas de corbeille : relire avant d'appuyer sur Entrée.","<code>cp</code> et <code>mv</code> écrasent sans prévenir (utiliser <code>-i</code> pour confirmer).","Un lien matériel ne peut pas traverser un système de fichiers ni pointer vers un répertoire ; un lien symbolique devient « cassé » si la cible est supprimée.","C'est le shell, pas la commande, qui développe <code>*</code> : <code>rm mystery*</code> supprime tout ce qui commence par « mystery »."]
 },
 {
- id:"vim", chap:"Chap. 8", titre:"Éditer et lire des fichiers texte",
+ id:"vim", cat:"fichiers", chap:"Chap. 8", titre:"Éditer et lire des fichiers texte",
  brief:"Red Hat recommande Vim car il est présent sur presque toutes les distributions. Vim a des modes : normal (commandes), insertion (saisie), ligne de commande (<code>:</code>). <code>vimtutor</code> est un tutoriel intégré. La configuration est dans <code>/etc/vimrc</code> (système) ou <code>~/.vimrc</code> (utilisateur).",
  exemple:`$ vim notes.txt
 # i        → mode insertion, on tape le texte
@@ -263,7 +282,7 @@ $ tail -f /var/log/messages`,
  pieges:["Bloqué dans Vim : Échap puis <code>:q!</code>.","Pour taper du texte il faut d'abord passer en mode insertion (<code>i</code>)."]
 },
 {
- id:"redir", chap:"Chap. 9", titre:"Redirections et pipes",
+ id:"redir", cat:"fichiers", chap:"Chap. 9", titre:"Redirections et pipes",
  brief:"Chaque processus a trois flux : stdin (0), stdout (1), stderr (2). On peut les rediriger vers des fichiers, les supprimer ou chaîner des commandes avec un pipe <code>|</code>. <code>tee</code> écrit à la fois dans un fichier et sur la sortie.",
  exemple:`$ find /etc -name "*.conf" > liste.txt 2> erreurs.txt
 $ find /etc -name "*.conf" 2> /dev/null | wc -l
@@ -285,7 +304,7 @@ $ echo "ligne" | sudo tee -a /etc/monfichier`,
  pieges:["<code>&gt;</code> écrase sans confirmation ; <code>&gt;&gt;</code> ajoute.","<code>sudo echo x &gt; /etc/fichier</code> échoue : la redirection est faite par ton shell, pas par root. Utiliser <code>| sudo tee</code>.","Ordre : <code>cmd &gt; f 2&gt;&amp;1</code> fonctionne, <code>cmd 2&gt;&amp;1 &gt; f</code> non."]
 },
 {
- id:"users", chap:"Chap. 10", titre:"Utilisateurs, groupes, sudo et mots de passe",
+ id:"users", cat:"securite", chap:"Chap. 10", titre:"Utilisateurs, groupes, sudo et mots de passe",
  brief:"Trois types de comptes : super utilisateur (root), utilisateurs système, utilisateurs standard. Chaque utilisateur a un groupe principal et des groupes supplémentaires. Infos dans <code>/etc/passwd</code>, <code>/etc/group</code> et <code>/etc/shadow</code> (mots de passe hachés). On devient root avec <code>su</code> ou on exécute une commande avec <code>sudo</code>. <code>chage</code> gère la politique de mots de passe.",
  exemple:`$ sudo groupadd consultants
 $ sudo useradd -G consultants consultant1
@@ -314,7 +333,7 @@ $ id consultant1`,
  pieges:["<code>usermod -G</code> sans <code>-a</code> <em>remplace</em> tous les groupes supplémentaires : toujours <code>-aG</code>.","<code>su</code> sans le tiret garde l'environnement de l'utilisateur d'origine ; <code>su -</code> charge celui de la cible.","Ne jamais éditer <code>/etc/sudoers</code> à la main : utiliser <code>visudo</code>.","<code>userdel</code> sans <code>-r</code> laisse le répertoire personnel."]
 },
 {
- id:"perms", chap:"Chap. 11", titre:"Permissions de fichiers",
+ id:"perms", cat:"securite", chap:"Chap. 11", titre:"Permissions de fichiers",
  brief:"Chaque fichier a un propriétaire (u), un groupe (g) et « les autres » (o), avec des droits r (lecture, 4), w (écriture, 2), x (exécution, 1). La règle la plus spécifique gagne : utilisateur, puis groupe, puis autres. Permissions spéciales : suid (4), sgid (2), sticky (1). L'umask retire des droits à la création (défaut 0022 depuis RHEL 9 : fichiers 644, répertoires 755).",
  exemple:`$ ls -l rapport.txt
 -rw-r--r--. 1 student student 120 Sep 20 rapport.txt
@@ -338,7 +357,7 @@ $ umask`,
  pieges:["Sur un répertoire, <code>x</code> = pouvoir le traverser (<code>cd</code>) ; <code>r</code> = lister son contenu.","L'umask <em>soustrait</em> des droits ; il n'en ajoute pas. Les fichiers ne sont jamais créés exécutables par défaut.","Si tu es propriétaire, seules les permissions « u » comptent, même si « g » est plus permissif.","Clé privée SSH : <code>chmod 600</code> sinon SSH la refuse.","sgid sur un répertoire : les nouveaux fichiers héritent du groupe du répertoire. sticky (ex. <code>/tmp</code>) : chacun ne supprime que ses propres fichiers."]
 },
 {
- id:"rpm", chap:"Chap. 12", titre:"Logiciels : RPM et DNF",
+ id:"rpm", cat:"logiciels", chap:"Chap. 12", titre:"Logiciels : RPM et DNF",
  brief:"Les logiciels RHEL sont des paquetages RPM, distribués dans des dépôts. RHEL fournit deux dépôts : BaseOS (cœur du système) et AppStream (applications et dépendances). <code>rpm</code> interroge la base locale et gère un fichier .rpm ; <code>dnf</code> gère les dépendances et les dépôts.",
  exemple:`$ dnf search all 'web server'
 $ dnf info httpd
@@ -369,7 +388,7 @@ $ sudo dnf config-manager --add-repo https://exemple.fr/mon.repo`,
  pieges:["<code>rpm -ivh</code> n'installe pas les dépendances : préférer <code>dnf install</code>.","Inspecter un RPM tiers (<code>-q -p --scripts</code>) avant de l'installer.","Les fichiers de dépôt sont dans <code>/etc/yum.repos.d/*.repo</code>."]
 },
 {
- id:"flatpak", chap:"Chap. 13", titre:"Applications Flatpak",
+ id:"flatpak", cat:"logiciels", chap:"Chap. 13", titre:"Applications Flatpak",
  brief:"Flatpak installe des applications dans un environnement isolé (sandbox), avec leurs runtimes (ex. Freedesktop). Les dépôts distants résolvent les dépendances automatiquement. Installation au niveau système ou seulement pour l'utilisateur (<code>--user</code>). GNOME Logiciels sait aussi les gérer.",
  exemple:`$ flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 $ flatpak remotes
@@ -390,7 +409,7 @@ $ flatpak uninstall org.gimp.GIMP`,
  pieges:["<code>--user</code> installe pour un seul utilisateur, sans droits root ; sans, c'est pour tout le système.","Un runtime manquant doit être installé avant l'application."]
 },
 {
- id:"montage", chap:"Chap. 14", titre:"Disques, montage et recherche de fichiers",
+ id:"montage", cat:"logiciels", chap:"Chap. 14", titre:"Disques, montage et recherche de fichiers",
  brief:"Les disques sont des périphériques en mode bloc (<code>/dev/sdb</code>). Pour accéder à leur contenu, on monte le système de fichiers sur un répertoire. <code>df</code> montre l'espace, <code>lsblk</code> les périphériques, <code>find</code> cherche en temps réel, <code>locate</code> utilise un index.",
  exemple:`$ lsblk -fp
 $ sudo mkdir /mnt/data
@@ -416,7 +435,7 @@ $ sudo updatedb && locate -i networkmanager.conf`,
  pieges:["<code>umount</code> échoue si un processus utilise le point de montage (même un shell dedans) : sortir du dossier ou repérer avec <code>lsof</code>.","<code>locate</code> ne voit pas les fichiers récents tant que <code>updatedb</code> n'a pas été lancé ; <code>find</code> est toujours à jour mais plus lent.","Un montage manuel n'est pas persistant après redémarrage.","En mode graphique, les supports amovibles sont montés sous <code>/run/media</code>."]
 },
 {
- id:"process", chap:"Chap. 15", titre:"Processus, jobs et signaux",
+ id:"process", cat:"systeme", chap:"Chap. 15", titre:"Processus, jobs et signaux",
  brief:"Un processus est un programme en cours d'exécution ; il est en état running, sleeping, stopped ou zombie. Le contrôle des tâches (jobs) gère avant-plan et arrière-plan dans un terminal. Les signaux sont des interruptions logicielles. La charge moyenne (load average) estime la consommation des ressources sur 1, 5 et 15 minutes.",
  exemple:`$ ./sauvegarde.sh &
 [1] 4581
@@ -444,7 +463,7 @@ $ grep -c processor /proc/cpuinfo`,
  pieges:["<code>kill</code> envoie SIGTERM par défaut, ce qui laisse le programme se fermer proprement ; SIGKILL est brutal.","<code>jobs</code> ne montre que les tâches du terminal courant.","Charge moyenne : à comparer au nombre de CPU (<code>lscpu</code>). Une charge de 4 sur 4 CPU est pleine ; sur 2 CPU, c'est saturé."]
 },
 {
- id:"systemd", chap:"Chap. 16", titre:"Services et démons (systemd)",
+ id:"systemd", cat:"systeme", chap:"Chap. 16", titre:"Services et démons (systemd)",
  brief:"<code>systemd</code> démarre les ressources et les démons, au boot ou à chaud, via <code>systemctl</code>. Il gère des unités de service, de socket et de chemin. On peut démarrer, arrêter, redémarrer, activer au démarrage ou masquer une unité.",
  exemple:`$ systemctl status sshd
 $ sudo systemctl enable --now httpd
@@ -471,7 +490,7 @@ $ journalctl -u httpd.service --since "1 hour ago"`,
  pieges:["<code>enable</code> ≠ <code>start</code> : le premier agit au prochain démarrage, le second maintenant. D'où <code>enable --now</code>.","<code>mask</code> est plus fort que <code>disable</code> : l'unité ne peut plus être lancée du tout.","Préférer <code>reload</code> à <code>restart</code> quand c'est possible pour ne pas couper les connexions."]
 },
 {
- id:"reseau", chap:"Chap. 17", titre:"Réseau : concepts et diagnostic",
+ id:"reseau", cat:"reseau", chap:"Chap. 17", titre:"Réseau : concepts et diagnostic",
  brief:"TCP/IP en couches. IPv4 : 32 bits en quatre octets, découpés en préfixe réseau et identifiant d'hôte par un masque (ex. /24). IPv6 : 128 bits en hexadécimal, souvent en /64. RHEL utilise des noms d'interface persistants (ex. <code>ens3</code>, <code>enp8s0</code>) basés sur le firmware et le bus PCI. La table de routage indique par où sortent les paquets.",
  exemple:`$ ip -br addr
 $ ip route
@@ -492,7 +511,7 @@ $ ss -lt`,
  pieges:["Sans <code>-c</code>, <code>ping</code> tourne indéfiniment (Ctrl+C pour arrêter).","<code>ss</code> remplace <code>netstat</code>.","Les noms d'interface ne sont plus <code>eth0</code> : ils sont persistants mais dépendent du matériel."]
 },
 {
- id:"nmcli", chap:"Chap. 18", titre:"Configuration réseau avec NetworkManager",
+ id:"nmcli", cat:"reseau", chap:"Chap. 18", titre:"Configuration réseau avec NetworkManager",
  brief:"Le démon NetworkManager gère les périphériques et les connexions ; <code>nmcli</code> est son outil en ligne de commande. RHEL 10 stocke les profils au format keyfile (INI) dans <code>/etc/NetworkManager/system-connections</code> : l'ancien format ifcfg est supprimé. Le nom d'hôte (FQDN) se gère avec <code>hostnamectl</code>, la résolution locale avec <code>/etc/hosts</code>.",
  exemple:`$ nmcli dev status
 $ nmcli con show
@@ -515,7 +534,7 @@ $ sudo hostnamectl set-hostname serveur1.exemple.fr`,
  pieges:["<code>nmcli con mod</code> ne s'applique pas tout seul : il faut <code>nmcli con up</code>.","Avec <code>ipv4.method manual</code>, il faut fournir une adresse.","Les profils <code>ifcfg-*</code> n'existent plus dans RHEL 10."]
 },
 {
- id:"ssh", chap:"Chap. 19", titre:"SSH : clés d'hôte et authentification par clé",
+ id:"ssh", cat:"reseau", chap:"Chap. 19", titre:"SSH : clés d'hôte et authentification par clé",
  brief:"SSH vérifie l'identité du serveur grâce à ses clés d'hôte, mémorisées côté client dans <code>known_hosts</code> (par utilisateur ou système). Pour l'utilisateur : mot de passe ou paire de clés (<code>ssh-keygen</code>). La clé publique est copiée sur le serveur ; la clé privée reste chez toi. Durcissement : désactiver la connexion directe de root et l'authentification par mot de passe dans <code>sshd_config</code>.",
  exemple:`$ ssh-keygen -f ~/.ssh/review_key
 $ ssh-copy-id -i ~/.ssh/review_key.pub student@servera
@@ -539,9 +558,23 @@ $ sudo systemctl reload sshd`,
 }
 ];
 
+const CATS = [
+ {id:'tous', label:'Tout'},
+ {id:'debuter', label:'Prise en main'},
+ {id:'fichiers', label:'Fichiers'},
+ {id:'securite', label:'Sécurité & accès'},
+ {id:'logiciels', label:'Logiciels & stockage'},
+ {id:'systeme', label:'Système en marche'},
+ {id:'reseau', label:'Réseau'}
+];
+let activeCat = 'tous';
+
 const list = document.getElementById('list');
 const toc = document.getElementById('toc');
 const empty = document.getElementById('empty');
+const tabsEl = document.getElementById('tabs');
+const catTitle = document.getElementById('cat-title');
+const catCount = document.getElementById('cat-count');
 
 function el(tag, attrs, html){
   const e = document.createElement(tag);
@@ -567,7 +600,7 @@ async function copyText(text, btn){
 function stripTags(h){const d=document.createElement('div');d.innerHTML=h;return d.textContent;}
 
 N.forEach((n, i) => {
-  const s = el('section', {class:'card', id:n.id});
+  const s = el('section', {class:'card', id:n.id, 'data-cat':n.cat});
   s.appendChild(el('span', {class:'chap'}, n.chap));
   s.appendChild(el('h2', null, (i+1) + '. ' + esc(n.titre)));
   s.appendChild(el('p', {class:'brief'}, n.brief));
@@ -631,17 +664,54 @@ N.forEach((n, i) => {
   s.dataset.search = stripTags(n.titre + ' ' + n.chap + ' ' + n.brief + ' ' + n.exemple + ' ' + n.cmds.map(x=>x.join(' ')).join(' ') + ' ' + (n.pieges||[]).join(' ')).toLowerCase();
   list.appendChild(s);
 
-  const a = el('a', {href:'#'+n.id}, '<span class="n">' + (i+1) + '</span>' + esc(n.titre));
+  const a = el('a', {href:'#'+n.id, 'data-cat':n.cat}, '<span class="n">' + (i+1) + '</span>' + esc(n.titre));
   a.dataset.target = n.id;
   toc.appendChild(a);
 });
 
+// Onglets de catégorie
+CATS.forEach(cat => {
+  const count = cat.id === 'tous' ? N.length : N.filter(n => n.cat === cat.id).length;
+  const btn = el('button', {class:'tab' + (cat.id === 'tous' ? ' active' : ''), type:'button', role:'tab', 'data-cat':cat.id},
+    esc(cat.label) + '<span class="cnt">(' + count + ')</span>');
+  btn.addEventListener('click', () => setActiveCat(cat.id));
+  tabsEl.appendChild(btn);
+});
+
+function setActiveCat(catId){
+  activeCat = catId;
+  tabsEl.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.cat === catId));
+  const cat = CATS.find(c => c.id === catId);
+  catTitle.textContent = catId === 'tous' ? 'Toutes les notions' : cat.label;
+  applyFilter();
+  document.getElementById('list').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+document.querySelectorAll('.express button.jump').forEach(btn => {
+  btn.addEventListener('click', () => setActiveCat(btn.dataset.cat));
+});
+
 const q = document.getElementById('q');
+let hadTerm = false;
 q.addEventListener('input', () => {
+  const term = q.value.trim();
+  // une recherche qui démarre s'étend à toutes les catégories ; on peut ensuite
+  // resserrer avec un onglet, qui s'applique alors en plus du terme recherché
+  if(term && !hadTerm && activeCat !== 'tous'){
+    activeCat = 'tous';
+    tabsEl.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.cat === 'tous'));
+    catTitle.textContent = 'Toutes les notions';
+  }
+  hadTerm = !!term;
+  applyFilter();
+});
+
+function applyFilter(){
   const term = q.value.trim().toLowerCase();
   let shown = 0;
   document.querySelectorAll('section.card').forEach(sec => {
-    const ok = !term || sec.dataset.search.includes(term);
+    const inCat = activeCat === 'tous' || sec.dataset.cat === activeCat;
+    const ok = inCat && (!term || sec.dataset.search.includes(term));
     sec.classList.toggle('hidden', !ok);
     if(ok) shown++;
     // filtrage fin des lignes de commandes
@@ -655,8 +725,11 @@ q.addEventListener('input', () => {
     const sec = document.getElementById(a.dataset.target);
     a.classList.toggle('hidden', sec.classList.contains('hidden'));
   });
+  catCount.textContent = shown + (shown > 1 ? ' notions' : ' notion') + (term ? ' trouvées' : '');
   empty.style.display = shown ? 'none' : 'block';
-});
+}
+
+applyFilter();
 </script>
 </body>
 </html>
