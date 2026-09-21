@@ -118,6 +118,10 @@ body.compact .cmd code{font-size:11.5px;padding:1px 5px}
   <div class="top-in">
     <div class="brand">Red Hat <span>·</span> Fiches de révision</div>
     <input id="q" type="search" placeholder="Rechercher une commande ou une notion (ex. chmod, umask, systemctl…)" aria-label="Rechercher">
+    <div class="view-actions">
+      <button class="view-btn" type="button" id="compact-toggle" aria-pressed="false">Vue compacte</button>
+      <button class="view-btn" type="button" id="print-btn">Imprimer</button>
+    </div>
   </div>
   <div class="levels">
     <div class="levels-track" id="levels" role="tablist" aria-label="Niveau">
@@ -161,10 +165,6 @@ body.compact .cmd code{font-size:11.5px;padding:1px 5px}
     <div class="cat-heading">
       <h2 id="cat-title">Toutes les notions</h2>
       <span class="cat-count" id="cat-count"></span>
-      <div class="view-actions">
-        <button class="view-btn" type="button" id="compact-toggle" aria-pressed="false">Vue compacte</button>
-        <button class="view-btn" type="button" id="print-btn">Imprimer</button>
-      </div>
     </div>
 
     <div id="list"></div>
