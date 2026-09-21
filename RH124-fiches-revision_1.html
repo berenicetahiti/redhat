@@ -111,6 +111,11 @@ body.compact .cmd code{font-size:11.5px;padding:1px 5px}
   body.compact section.card{break-inside:avoid;margin-bottom:8px}
   body.compact .express,body.compact .cat-heading{display:none}
 }
+/* Lien vers le dictionnaire des commandes (page séparée, dictionnaire-commandes.html) */
+a.dict-jump{flex:none;display:inline-flex;align-items:center;color:var(--muted);opacity:.6;padding:1px 2px}
+a.dict-jump:hover{opacity:1;color:var(--accent)}
+@keyframes dictFlash{0%{background:var(--accent-soft)}100%{background:var(--panel)}}
+.flash{animation:dictFlash 1.6s ease}
 </style>
 </head>
 <body>
@@ -119,6 +124,7 @@ body.compact .cmd code{font-size:11.5px;padding:1px 5px}
     <div class="brand">Red Hat <span>·</span> Fiches de révision</div>
     <input id="q" type="search" placeholder="Rechercher une commande ou une notion (ex. chmod, umask, systemctl…)" aria-label="Rechercher">
     <div class="view-actions">
+      <a class="view-btn" href="dictionnaire-commandes.html" target="_blank" rel="noopener">Dictionnaire ↗</a>
       <button class="view-btn" type="button" id="compact-toggle" aria-pressed="false">Vue compacte</button>
       <button class="view-btn" type="button" id="print-btn">Imprimer</button>
     </div>
@@ -1157,6 +1163,10 @@ const CATS2 = [
  {id:'deploiement', label:'Déploiement & conteneurs'}
 ];
 
+/* Commandes présentes dans le dictionnaire séparé (dictionnaire-commandes.html),
+   pour savoir quelles lignes méritent un lien "voir dans le dictionnaire". */
+const DICT_KEYS = new Set(["./firstscript.sh", "/bin/false", "/bin/true", "apropos", "at", "atq", "atrm", "ausearch", "bash", "bg", "bootc", "c", "cat", "cd", "chage", "chmod", "chown", "chronyc", "control", "cp", "crontab", "curl", "date", "df", "dnf", "du", "echo", "eval", "exit", "export", "fg", "file=examplefile", "find", "firewall-cmd", "for", "getenforce", "getent", "getsebool", "grep", "groupadd", "grubby", "head", "host", "hostname", "hostnamectl", "id", "instance", "ip", "jobs", "journalctl", "kill", "ksvalidator", "lab", "less", "ln", "locate", "logger", "ls", "lsblk", "lscpu", "lvcreate", "lvdisplay", "lvextend", "mkdir", "mkfs", "mkfs.xfs", "mkswap", "monitor", "mount", "mv", "nice", "nmap", "nmcli", "nproc", "parted", "passwd", "ping", "pkill", "podman", "ps", "pvcreate", "pvdisplay", "pwd", "reboot", "renice", "restorecon", "rm", "rmdir", "rpm", "rpm2cpio", "rsync", "scp", "sealert", "sed", "semanage", "setenforce", "setsebool", "sftp", "sleep", "source", "ss", "ssh", "ssh-add", "ssh-copy-id", "ssh-keygen", "ssh-keyscan", "su", "sudo", "swapoff", "swapon", "sysctl", "systemctl", "systemd-tmpfiles", "tail", "tar", "task101.sh", "task102.sh", "task103.sh", "timedatectl", "top", "touch", "tracepath", "tree", "tuned-adm", "tzselect", "udevadm", "umask", "umount", "updatedb", "useradd", "userdel", "usermod", "vgcreate", "vgdisplay", "vgextend", "vim", "vimtutor", "watch", "while", "xfs_growfs"]);
+
 const LEVELS = {
  1:{course:'RH124', title:"Red Hat System Administration I (RH124)", data:N1, cats:CATS1, expressId:'express-1'},
  2:{course:'RH134', title:"Red Hat System Administration II (RH134)", data:N2, cats:CATS2, expressId:'express-2'}
@@ -1242,7 +1252,13 @@ function buildCard(n, i){
     box.appendChild(el('code', null, esc(c)));
     const b = el('button', {class:'copy', type:'button', 'aria-label':'Copier la commande'}, 'Copier');
     b.addEventListener('click', () => copyText(c, b));
-    box.appendChild(b); td1.appendChild(box);
+    box.appendChild(b);
+    const dbase = baseCmd(c);
+    if(dbase && DICT_KEYS.has(dbase)){
+      const dl = el('a', {class:'dict-jump', href:'dictionnaire-commandes.html#'+slugify(dbase), target:'_blank', rel:'noopener', title:'Voir toutes les occurrences dans le dictionnaire des commandes'}, '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>');
+      box.appendChild(dl);
+    }
+    td1.appendChild(box);
     tr.appendChild(td1);
     tr.appendChild(el('td', null, d));
     tb.appendChild(tr);
@@ -1286,19 +1302,31 @@ q.addEventListener('input', () => {
   applyFilter();
 });
 
+function escapeRegex(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+function termMatches(haystack, term){
+  if(!term) return true;
+  try{
+    return new RegExp('\\b' + escapeRegex(term), 'i').test(haystack);
+  }catch(e){
+    return haystack.includes(term);
+  }
+}
+
 function applyFilter(){
   const term = q.value.trim().toLowerCase();
   let shown = 0;
   document.querySelectorAll('section.card').forEach(sec => {
     const inCat = activeCat === 'tous' || sec.dataset.cat === activeCat;
-    const ok = inCat && (!term || sec.dataset.search.includes(term));
+    const ok = inCat && (!term || termMatches(sec.dataset.search, term));
     sec.classList.toggle('hidden', !ok);
     if(ok) shown++;
     // filtrage fin des lignes de commandes
-    sec.querySelectorAll('table.cmds tr').forEach(tr => {
+    const rows = Array.from(sec.querySelectorAll('table.cmds tr'));
+    const secMatchesOnTitle = !term || termMatches(sec.querySelector('h2').textContent.toLowerCase(), term);
+    const anyRowMatches = rows.some(r => termMatches(r.textContent.toLowerCase(), term));
+    rows.forEach(tr => {
       const txt = tr.textContent.toLowerCase();
-      const secMatchesOnTitle = !term || sec.querySelector('h2').textContent.toLowerCase().includes(term);
-      tr.classList.toggle('hidden', !!term && !secMatchesOnTitle && !txt.includes(term) && sec.dataset.search.includes(term) && Array.from(sec.querySelectorAll('table.cmds tr')).some(r => r.textContent.toLowerCase().includes(term)));
+      tr.classList.toggle('hidden', !!term && !secMatchesOnTitle && anyRowMatches && !termMatches(txt, term));
     });
   });
   toc.querySelectorAll('a').forEach(a => {
@@ -1373,7 +1401,42 @@ setCompact(initialCompact);
 
 document.getElementById('print-btn').addEventListener('click', () => window.print());
 
+// ---------- Lien vers le dictionnaire des commandes (dictionnaire-commandes.html) ----------
+function baseCmd(cmd){
+  const toks = String(cmd).trim().split(/\s+/);
+  if(!toks.length || !toks[0]) return null;
+  if(toks[0] === 'sudo'){
+    if(toks.length > 1 && !toks[1].startsWith('-')) return toks[1];
+    return 'sudo';
+  }
+  return toks[0];
+}
+function slugify(s){
+  return 'dict-' + String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+function flashTarget(elm){
+  elm.classList.add('flash');
+  setTimeout(() => elm.classList.remove('flash'), 1600);
+}
+
 renderLevel(1);
+
+// Arrivée depuis le dictionnaire des commandes (lien "voir aussi dans les fiches") :
+// ?level=2 ouvre le bon niveau, puis #id fait défiler jusqu'à la fiche visée.
+(function openDeepLink(){
+  const params = new URLSearchParams(location.search);
+  if(Number(params.get('level')) === 2 && currentLevel !== 2){
+    renderLevel(2);
+  }
+  const id = location.hash.slice(1);
+  const target = id && document.getElementById(id);
+  if(target){
+    requestAnimationFrame(() => {
+      target.scrollIntoView({block:'start'});
+      flashTarget(target);
+    });
+  }
+})();
 </script>
 </body>
 </html>
