@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RH124 – Fiches de révision</title>
+<style>
+:root{
+  --bg:#fafaf9; --panel:#ffffff; --ink:#1c1c1e; --muted:#6b6b70; --line:#e4e2df;
+  --accent:#c9190b; --accent-soft:#fdeceb; --code-bg:#f3f2f0; --code-ink:#22222a;
+  --warn-bg:#fff6e5; --warn-line:#e8b44a; --ok:#2b7a3d;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header.top{position:sticky;top:0;z-index:10;background:rgba(250,250,249,.95);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.top-in{max-width:1100px;margin:0 auto;padding:10px 16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.brand{font-weight:700;letter-spacing:-.01em}
+.brand span{color:var(--accent)}
+#q{flex:1;min-width:200px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff}
+#q:focus{outline:2px solid var(--accent);outline-offset:1px}
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px 60px;display:grid;grid-template-columns:230px 1fr;gap:32px}
+nav.toc{position:sticky;top:76px;align-self:start;max-height:calc(100vh - 96px);overflow:auto;padding-top:24px;font-size:14px}
+nav.toc a{display:block;padding:4px 8px;border-radius:6px;color:var(--muted);text-decoration:none}
+nav.toc a:hover{background:var(--accent-soft);color:var(--accent)}
+nav.toc .n{display:inline-block;width:22px;color:var(--accent);font-variant-numeric:tabular-nums}
+main{padding-top:24px;min-width:0}
+h1{font-size:1.9rem;line-height:1.2;margin:0 0 6px;letter-spacing:-.02em}
+.sub{color:var(--muted);margin:0 0 20px}
+.express{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:16px 20px;margin-bottom:28px}
+.express h2{margin:0 0 8px;font-size:1.05rem}
+.express ul{margin:0;padding-left:1.1em}
+.express li{margin:3px 0}
+section.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin-bottom:20px}
+section.card h2{margin:0 0 4px;font-size:1.25rem;letter-spacing:-.01em}
+.chap{display:inline-block;font-size:12px;font-weight:600;color:var(--accent);background:var(--accent-soft);border-radius:99px;padding:2px 10px;margin-bottom:8px}
+.brief{margin:6px 0 14px}
+h3{font-size:.8rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:18px 0 8px}
+table.cmds{width:100%;border-collapse:collapse;font-size:14.5px}
+table.cmds td{padding:6px 8px;border-top:1px solid var(--line);vertical-align:top}
+table.cmds tr:first-child td{border-top:0}
+table.cmds td:first-child{width:52%}
+.cmd{display:flex;align-items:flex-start;gap:8px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.cmd code{background:var(--code-bg);color:var(--code-ink);padding:2px 7px;border-radius:5px;font-size:13.5px;word-break:break-word}
+button.copy{flex:none;border:1px solid var(--line);background:#fff;border-radius:6px;font-size:12px;padding:2px 8px;cursor:pointer;color:var(--muted)}
+button.copy:hover{border-color:var(--accent);color:var(--accent)}
+button.copy.done{color:var(--ok);border-color:var(--ok)}
+.exwrap{position:relative}
+pre{background:var(--code-bg);color:var(--code-ink);padding:12px 14px;border-radius:8px;overflow:auto;margin:0;font-size:13.5px;line-height:1.5}
+pre .c{color:#7a7a80}
+pre .p{color:var(--accent);user-select:none}
+.exwrap button.copy{position:absolute;top:8px;right:8px}
+.traps{background:var(--warn-bg);border:1px solid var(--warn-line);border-radius:8px;padding:10px 14px 10px 16px}
+.traps ul{margin:0;padding-left:1.1em}
+.traps li{margin:4px 0}
+.traps code{background:rgba(0,0,0,.06);padding:1px 5px;border-radius:4px;font-size:13px}
+p code,li code{background:var(--code-bg);padding:1px 5px;border-radius:4px;font-size:13px}
+.hidden{display:none!important}
+#empty{display:none;color:var(--muted);text-align:center;padding:40px 0}
+footer{color:var(--muted);font-size:13px;text-align:center;padding:10px 0 40px}
+@media (max-width:820px){
+  .wrap{grid-template-columns:1fr}
+  nav.toc{display:none}
+  table.cmds td:first-child{width:auto}
+  table.cmds,table.cmds tbody,table.cmds tr,table.cmds td{display:block;width:100%}
+  table.cmds td{border-top:0;padding:2px 0}
+  table.cmds tr{border-top:1px solid var(--line);padding:8px 0}
+  table.cmds tr:first-child{border-top:0}
+}
+@media print{
+  header.top,nav.toc,button.copy{display:none}
+  .wrap{display:block}
+  section.card{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <div class="brand">RH124 <span>·</span> Fiches de révision</div>
+    <input id="q" type="search" placeholder="Rechercher une commande ou une notion (ex. chmod, umask, systemctl…)" aria-label="Rechercher">
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="toc" id="toc" aria-label="Notions"></nav>
+  <main>
+    <h1>Red Hat System Administration I (RH124)</h1>
+    <p class="sub">RHEL 10 · Fiches par notion : l'essentiel, un exemple, les commandes à retenir et les pièges.</p>
+
+    <div class="express">
+      <h2>Résumé express</h2>
+      <ul>
+        <li><strong>Prise en main :</strong> RHEL, le shell Bash, l'aide locale (<code>man</code>), l'assistant IA Lightspeed et l'enregistrement du système chez Red Hat.</li>
+        <li><strong>Fichiers :</strong> arborescence unique depuis <code>/</code>, gestion en ligne de commande, liens, globbing, Vim, redirections et pipes.</li>
+        <li><strong>Sécurité et accès :</strong> utilisateurs, groupes, <code>sudo</code>, mots de passe, permissions (<code>rwx</code>, octal, umask, suid/sgid/sticky).</li>
+        <li><strong>Logiciels et stockage :</strong> RPM et DNF, dépôts BaseOS/AppStream, Flatpak, montage de disques, <code>find</code> et <code>locate</code>.</li>
+        <li><strong>Système en marche :</strong> processus, signaux, jobs, services <code>systemd</code>.</li>
+        <li><strong>Réseau :</strong> TCP/IP, <code>ip</code>, <code>nmcli</code>, nom d'hôte, SSH avec authentification par clé.</li>
+      </ul>
+    </div>
+
+    <div id="list"></div>
+    <div id="empty">Aucune notion ne correspond à cette recherche.</div>
+    <footer>Fiches établies à partir du support RH124 (RHEL 10.0). Les commandes sont à tester sur un système de lab.</footer>
+  </main>
+</div>
+
+<script>
+/* Chaque notion : id, chap, titre, brief, exemple (lignes "$ " = commandes copiables), cmds [commande, description], pieges [] */
+const N = [
+{
+ id:"contexte", chap:"Chap. 1", titre:"RHEL et l'Open Source",
+ brief:"Un logiciel Open Source a un code source que tout le monde peut utiliser, étudier, modifier et partager. Une distribution Linux = noyau Linux + bibliothèques + programmes. RHEL est la distribution Linux commerciale de Red Hat : elle stabilise des projets communautaires pour les proposer avec support en entreprise. Un abonnement Red Hat Developer gratuit donne accès à RHEL pour apprendre.",
+ exemple:`$ cat /etc/redhat-release
+$ uname -r
+$ hostnamectl`,
+ cmds:[
+  ["cat /etc/redhat-release","Version de RHEL installée"],
+  ["uname -r","Version du noyau en cours"],
+  ["hostnamectl","Nom d'hôte, OS, noyau en un coup d'œil"]
+ ],
+ pieges:["RHEL est la version stabilisée et supportée ; les projets amont (communautaires) évoluent plus vite."]
+},
+{
+ id:"bash", chap:"Chap. 2", titre:"Ligne de commande et shell Bash",
+ brief:"Bash interprète les commandes tapées. Syntaxe : <code>commande [options] [arguments]</code>. On y accède via un terminal graphique, une console texte ou SSH. Le confort vient des raccourcis clavier, de la complétion avec Tab et de l'historique.",
+ exemple:`$ date +%F
+2026-09-20
+$ echo $HOME
+/home/student
+$ history | tail -3
+# Rejouer la dernière commande avec sudo :
+$ sudo !!`,
+ cmds:[
+  ["date","Affiche la date et l'heure"],
+  ["whoami / id","Utilisateur courant / UID, GID, groupes"],
+  ["hostname","Nom de la machine"],
+  ["echo $PATH","Affiche une variable (ici les dossiers d'exécutables)"],
+  ["history","Liste des commandes tapées ; <code>!!</code> rejoue la dernière, <code>!N</code> la N-ième"],
+  ["exit ou Ctrl+D","Ferme le shell / la session"],
+  ["Tab (×2)","Complète, ou liste les possibilités"],
+  ["Ctrl+A / Ctrl+E","Début / fin de ligne"],
+  ["Ctrl+U / Ctrl+K","Efface avant / après le curseur"],
+  ["Ctrl+R","Recherche dans l'historique"],
+  ["Ctrl+C / Ctrl+L","Interrompt la commande / vide l'écran"]
+ ],
+ pieges:["Linux est sensible à la casse : <code>Fichier</code> et <code>fichier</code> sont deux fichiers différents.","Ctrl+Alt+F-touche permet de basculer entre consoles virtuelles (utile si l'interface graphique est désactivée)."]
+},
+{
+ id:"aide", chap:"Chap. 3 et 5", titre:"Obtenir de l'aide (man et Lightspeed)",
+ brief:"Les pages <code>man</code> sont la référence locale. Elles sont numérotées par section : 1 = commandes utilisateur, 2 = appels système, 5 = formats de fichiers, 8 = commandes d'administration. L'assistant en ligne de commande RHEL Lightspeed répond à des questions en langage naturel (à installer avec <code>command-line-assistant</code>).",
+ exemple:`$ man -k passwd
+passwd (1)   - update user's authentication tokens
+passwd (5)   - password file
+$ man 5 passwd
+$ c chat "Comment vérifier l'état du service sshd ?"`,
+ cmds:[
+  ["man COMMANDE","Ouvre la page de manuel"],
+  ["man 5 passwd","Ouvre la section 5 (format du fichier) plutôt que la commande"],
+  ["man -k MOT","Recherche par mot-clé (dans les descriptions)"],
+  ["/motif puis n / N","Dans man : rechercher, occurrence suivante / précédente"],
+  ["q","Quitte la page man"],
+  ["COMMANDE --help","Aide courte intégrée à la commande"],
+  ["sudo mandb","Reconstruit l'index utilisé par <code>man -k</code>"],
+  ["sudo dnf install command-line-assistant","Installe l'assistant Lightspeed"],
+  ["c chat \"question\"","Pose une question à l'assistant"],
+  ["c chat -a fichier \"question\"","Joint un fichier ou une sortie à la question (<code>--attachment</code>)"]
+ ],
+ pieges:["<code>man passwd</code> ouvre la section 1 (la commande) : pour le fichier <code>/etc/passwd</code>, il faut <code>man 5 passwd</code>.","Vérifier toute commande proposée par l'IA (avec <code>man</code> ou <code>--help</code>) avant de l'exécuter, surtout en root."]
+},
+{
+ id:"support", chap:"Chap. 4", titre:"Enregistrer un système chez Red Hat",
+ brief:"Un système enregistré accède au CDN Red Hat (mises à jour, correctifs de sécurité). Le modèle Simple Content Access centralise la gestion dans la Hybrid Cloud Console. Deux outils : <code>rhc</code> (peut aussi activer Red Hat Insights) et <code>subscription-manager</code>. La console web RHEL fait la même chose graphiquement.",
+ exemple:`$ sudo rhc connect
+# ou avec une clé d'activation :
+$ sudo rhc connect --activation-key MACLE --organization 1234567
+# ou avec subscription-manager :
+$ sudo subscription-manager register`,
+ cmds:[
+  ["sudo rhc connect","Enregistre le système (et active Insights)"],
+  ["rhc connect --disable-feature FONCTION","Se connecte en désactivant une fonction (ex. Insights)"],
+  ["sudo subscription-manager register","Enregistre le système"],
+  ["subscription-manager status","État de l'abonnement"],
+  ["sudo subscription-manager unregister","Désenregistre le système"]
+ ],
+ pieges:["Ces commandes demandent les droits root (<code>sudo</code>).","<code>rhc</code> active Insights par défaut : à désactiver explicitement si ce n'est pas voulu."]
+},
+{
+ id:"arbo", chap:"Chap. 6", titre:"Navigation dans l'arborescence",
+ brief:"Tous les fichiers vivent dans une arborescence inversée unique qui part de la racine <code>/</code>. Chaque répertoire a un rôle : <code>/etc</code> configuration, <code>/home</code> dossiers utilisateurs, <code>/var</code> données variables (logs), <code>/usr</code> logiciels, <code>/boot</code> fichiers de démarrage, <code>/dev</code> périphériques, <code>/tmp</code> temporaire, <code>/root</code> home de root. Un chemin absolu commence par <code>/</code>, un chemin relatif non.",
+ exemple:`$ pwd
+/home/student
+$ cd /etc/ssh
+$ cd ..
+$ pwd
+/etc
+$ cd -
+/etc/ssh
+$ ls -la ~`,
+ cmds:[
+  ["pwd","Répertoire courant"],
+  ["cd CHEMIN","Change de répertoire (<code>cd</code> seul ou <code>cd ~</code> : home)"],
+  ["cd ..  /  cd -","Répertoire parent  /  répertoire précédent"],
+  ["ls -l","Liste détaillée (permissions, propriétaire, taille, date)"],
+  ["ls -a","Inclut les fichiers cachés (commençant par <code>.</code>)"],
+  ["ls -R","Récursif"],
+  ["ls -ld REP","Détails du répertoire lui-même, pas de son contenu"],
+  ["tree","Affiche l'arborescence"],
+  ["touch fichier","Crée un fichier vide (ou met à jour sa date)"]
+ ],
+ pieges:["Un fichier caché commence par un point ; <code>ls</code> ne l'affiche pas sans <code>-a</code>.","<code>.</code> = répertoire courant, <code>..</code> = parent."]
+},
+{
+ id:"fichiers", chap:"Chap. 7", titre:"Gérer les fichiers, liens et globbing",
+ brief:"Créer, copier, déplacer, supprimer. Les liens permettent à plusieurs noms de pointer vers les mêmes données : lien matériel (même inode) ou lien symbolique (raccourci vers un chemin). Le shell développe les motifs (globbing) avant d'exécuter la commande.",
+ exemple:`$ mkdir -p Videos/season{1..2}
+$ touch tv_season{1..2}_episode{1..6}.ogg
+$ mv tv_season1* Videos/season1
+$ mv tv_season2* Videos/season2
+$ cp -r Videos Videos-backup
+$ ln -s /tmp ~/tempdir
+$ ls -li fichier lien.hard`,
+ cmds:[
+  ["mkdir -p a/b/c","Crée les répertoires (et les parents manquants)"],
+  ["cp SRC DEST  /  cp -r REP DEST","Copie un fichier  /  un répertoire (récursif)"],
+  ["mv SRC DEST","Déplace ou renomme"],
+  ["rm fichier  /  rm -r REP","Supprime un fichier  /  un répertoire et son contenu"],
+  ["rmdir REP","Supprime un répertoire vide"],
+  ["ln cible lien","Lien matériel"],
+  ["ln -s cible lien","Lien symbolique"],
+  ["ls -li","Affiche les numéros d'inode (liens matériels = même inode)"],
+  ["*  ?  [abc]  [^abc]","Globbing : tout / un caractère / dans l'ensemble / hors ensemble"],
+  ["{a,b}  {1..5}","Expansion d'accolades : <code>touch f{1..3}.txt</code>"],
+  ["~  ·  $(commande)","Home de l'utilisateur · substitution de commande"]
+ ],
+ pieges:["<code>rm -r</code> n'a pas de corbeille : relire avant d'appuyer sur Entrée.","<code>cp</code> et <code>mv</code> écrasent sans prévenir (utiliser <code>-i</code> pour confirmer).","Un lien matériel ne peut pas traverser un système de fichiers ni pointer vers un répertoire ; un lien symbolique devient « cassé » si la cible est supprimée.","C'est le shell, pas la commande, qui développe <code>*</code> : <code>rm mystery*</code> supprime tout ce qui commence par « mystery »."]
+},
+{
+ id:"vim", chap:"Chap. 8", titre:"Éditer et lire des fichiers texte",
+ brief:"Red Hat recommande Vim car il est présent sur presque toutes les distributions. Vim a des modes : normal (commandes), insertion (saisie), ligne de commande (<code>:</code>). <code>vimtutor</code> est un tutoriel intégré. La configuration est dans <code>/etc/vimrc</code> (système) ou <code>~/.vimrc</code> (utilisateur).",
+ exemple:`$ vim notes.txt
+# i        → mode insertion, on tape le texte
+# Échap    → retour au mode normal
+# :wq      → enregistre et quitte
+$ cat notes.txt
+$ tail -f /var/log/messages`,
+ cmds:[
+  ["vim fichier","Ouvre (ou crée) un fichier"],
+  ["i  /  a  /  o","Insérer avant  /  après le curseur  /  nouvelle ligne dessous"],
+  ["Échap","Retour au mode normal"],
+  [":w  :q  :wq  :q!","Enregistrer · quitter · les deux · quitter sans enregistrer"],
+  ["dd  yy  p  u","Couper une ligne · copier une ligne · coller · annuler"],
+  ["/motif","Rechercher"],
+  [":set number","Affiche les numéros de ligne"],
+  ["vimtutor","Tutoriel interactif"],
+  ["cat  /  less","Afficher tout  /  page par page"],
+  ["head -n 5  /  tail -n 5","Premières / dernières lignes"],
+  ["tail -f fichier","Suit un fichier en direct (logs)"],
+  ["wc -l fichier","Compte les lignes (<code>-w</code> mots, <code>-c</code> octets)"]
+ ],
+ pieges:["Bloqué dans Vim : Échap puis <code>:q!</code>.","Pour taper du texte il faut d'abord passer en mode insertion (<code>i</code>)."]
+},
+{
+ id:"redir", chap:"Chap. 9", titre:"Redirections et pipes",
+ brief:"Chaque processus a trois flux : stdin (0), stdout (1), stderr (2). On peut les rediriger vers des fichiers, les supprimer ou chaîner des commandes avec un pipe <code>|</code>. <code>tee</code> écrit à la fois dans un fichier et sur la sortie.",
+ exemple:`$ find /etc -name "*.conf" > liste.txt 2> erreurs.txt
+$ find /etc -name "*.conf" 2> /dev/null | wc -l
+$ ps aux --sort=-%mem | head -5
+$ ls -l /etc | tee resultat.txt | less
+$ echo "ligne" | sudo tee -a /etc/monfichier`,
+ cmds:[
+  ["cmd > fichier","Écrase le fichier avec stdout"],
+  ["cmd >> fichier","Ajoute à la fin"],
+  ["cmd 2> fichier","Redirige stderr (les erreurs)"],
+  ["cmd 2> /dev/null","Jette les erreurs"],
+  ["cmd &> fichier","stdout et stderr dans le même fichier"],
+  ["cmd > f 2>&1","Équivalent ancien style"],
+  ["cmd < fichier","Utilise un fichier comme entrée"],
+  ["cmd1 | cmd2","Envoie stdout de cmd1 vers stdin de cmd2"],
+  ["cmd | tee fichier","Écrit dans le fichier ET affiche"],
+  ["tee -a fichier","Ajoute au lieu d'écraser"]
+ ],
+ pieges:["<code>&gt;</code> écrase sans confirmation ; <code>&gt;&gt;</code> ajoute.","<code>sudo echo x &gt; /etc/fichier</code> échoue : la redirection est faite par ton shell, pas par root. Utiliser <code>| sudo tee</code>.","Ordre : <code>cmd &gt; f 2&gt;&amp;1</code> fonctionne, <code>cmd 2&gt;&amp;1 &gt; f</code> non."]
+},
+{
+ id:"users", chap:"Chap. 10", titre:"Utilisateurs, groupes, sudo et mots de passe",
+ brief:"Trois types de comptes : super utilisateur (root), utilisateurs système, utilisateurs standard. Chaque utilisateur a un groupe principal et des groupes supplémentaires. Infos dans <code>/etc/passwd</code>, <code>/etc/group</code> et <code>/etc/shadow</code> (mots de passe hachés). On devient root avec <code>su</code> ou on exécute une commande avec <code>sudo</code>. <code>chage</code> gère la politique de mots de passe.",
+ exemple:`$ sudo groupadd consultants
+$ sudo useradd -G consultants consultant1
+$ sudo passwd consultant1
+$ sudo usermod -aG wheel consultant1
+$ sudo chage -M 90 -W 7 consultant1
+$ sudo usermod -L consultant1
+$ id consultant1`,
+ cmds:[
+  ["id  /  id user","UID, GID et groupes"],
+  ["su - user","Devient l'utilisateur avec son environnement complet"],
+  ["sudo -i  /  sudo cmd","Shell root  /  une commande en root"],
+  ["visudo","Édite <code>/etc/sudoers</code> avec validation (aussi <code>/etc/sudoers.d/</code>)"],
+  ["useradd nom  /  useradd -G grp nom","Crée un utilisateur (avec groupe supplémentaire)"],
+  ["usermod -aG grp nom","<strong>Ajoute</strong> un groupe supplémentaire"],
+  ["usermod -c \"Nom complet\" nom","Modifie le commentaire"],
+  ["usermod -L nom  /  usermod -U nom","Verrouille / déverrouille le compte"],
+  ["usermod -s /sbin/nologin nom","Interdit les connexions interactives"],
+  ["userdel -r nom","Supprime l'utilisateur et son home"],
+  ["passwd nom","Définit ou change le mot de passe"],
+  ["chage -l nom","Affiche la politique du mot de passe"],
+  ["chage -m 0 -M 90 -W 7 -I 14 nom","Min/max jours, avertissement, période d'inactivité"],
+  ["chage -E $(date -d \"+30 days\" +%F) nom","Date d'expiration du compte"],
+  ["groupadd  /  groupmod -n nouveau ancien  /  groupdel","Créer / renommer / supprimer un groupe"]
+ ],
+ pieges:["<code>usermod -G</code> sans <code>-a</code> <em>remplace</em> tous les groupes supplémentaires : toujours <code>-aG</code>.","<code>su</code> sans le tiret garde l'environnement de l'utilisateur d'origine ; <code>su -</code> charge celui de la cible.","Ne jamais éditer <code>/etc/sudoers</code> à la main : utiliser <code>visudo</code>.","<code>userdel</code> sans <code>-r</code> laisse le répertoire personnel."]
+},
+{
+ id:"perms", chap:"Chap. 11", titre:"Permissions de fichiers",
+ brief:"Chaque fichier a un propriétaire (u), un groupe (g) et « les autres » (o), avec des droits r (lecture, 4), w (écriture, 2), x (exécution, 1). La règle la plus spécifique gagne : utilisateur, puis groupe, puis autres. Permissions spéciales : suid (4), sgid (2), sticky (1). L'umask retire des droits à la création (défaut 0022 depuis RHEL 9 : fichiers 644, répertoires 755).",
+ exemple:`$ ls -l rapport.txt
+-rw-r--r--. 1 student student 120 Sep 20 rapport.txt
+$ chmod g+w rapport.txt        # symbolique
+$ chmod 640 rapport.txt        # octal : rw- r-- ---
+$ sudo chown alice:devs rapport.txt
+$ chmod g+s /home/consultants  # sgid : hérite du groupe
+$ chmod 600 ~/.ssh/id_ed25519
+$ umask`,
+ cmds:[
+  ["ls -l","Affiche propriétaire, groupe et permissions"],
+  ["chmod u+x,g-w,o-rwx fichier","Notation symbolique"],
+  ["chmod 644 fichier","Notation octale (r=4, w=2, x=1)"],
+  ["chmod -R 750 rep","Récursif"],
+  ["chmod +X -R rep","x uniquement sur répertoires et fichiers déjà exécutables"],
+  ["chown user fichier  /  chown user:grp fichier","Change propriétaire (et groupe)"],
+  ["chgrp grp fichier","Change le groupe"],
+  ["chmod u+s  /  g+s  /  +t","suid · sgid · sticky bit"],
+  ["umask  /  umask 027","Affiche / définit le masque de création"]
+ ],
+ pieges:["Sur un répertoire, <code>x</code> = pouvoir le traverser (<code>cd</code>) ; <code>r</code> = lister son contenu.","L'umask <em>soustrait</em> des droits ; il n'en ajoute pas. Les fichiers ne sont jamais créés exécutables par défaut.","Si tu es propriétaire, seules les permissions « u » comptent, même si « g » est plus permissif.","Clé privée SSH : <code>chmod 600</code> sinon SSH la refuse.","sgid sur un répertoire : les nouveaux fichiers héritent du groupe du répertoire. sticky (ex. <code>/tmp</code>) : chacun ne supprime que ses propres fichiers."]
+},
+{
+ id:"rpm", chap:"Chap. 12", titre:"Logiciels : RPM et DNF",
+ brief:"Les logiciels RHEL sont des paquetages RPM, distribués dans des dépôts. RHEL fournit deux dépôts : BaseOS (cœur du système) et AppStream (applications et dépendances). <code>rpm</code> interroge la base locale et gère un fichier .rpm ; <code>dnf</code> gère les dépendances et les dépôts.",
+ exemple:`$ dnf search all 'web server'
+$ dnf info httpd
+$ sudo dnf install httpd
+$ dnf provides /var/www/html
+$ rpm -qf /etc/yum.repos.d
+$ sudo dnf remove httpd
+$ dnf history
+$ sudo dnf config-manager --add-repo https://exemple.fr/mon.repo`,
+ cmds:[
+  ["dnf list [installed]","Liste les paquetages"],
+  ["dnf search MOT  /  dnf search all MOT","Recherche (noms/résumés · tous les champs)"],
+  ["dnf info PAQUET","Détails d'un paquetage"],
+  ["dnf provides CHEMIN","Quel paquetage fournit ce fichier"],
+  ["sudo dnf install PAQUET","Installe (avec dépendances)"],
+  ["sudo dnf update [PAQUET]","Met à jour"],
+  ["sudo dnf remove PAQUET","Supprime (et dépendances devenues inutiles)"],
+  ["dnf history","Historique des transactions"],
+  ["dnf group list  /  dnf group install \"NOM\"","Groupes de paquetages"],
+  ["dnf repolist all","Dépôts (activés et désactivés)"],
+  ["dnf config-manager --add-repo URL","Ajoute un dépôt"],
+  ["rpm -q PAQUET  /  rpm -qa","Est-il installé ? · tous les installés"],
+  ["rpm -qi PAQUET  /  rpm -ql PAQUET","Infos · liste des fichiers"],
+  ["rpm -qf FICHIER","Quel paquetage possède ce fichier"],
+  ["rpm -qp fichier.rpm -i / -l / --scripts","Inspecter un .rpm avant installation"],
+  ["rpm2cpio f.rpm | cpio -tv","Lister le contenu d'un .rpm (<code>-idv</code> pour extraire)"]
+ ],
+ pieges:["<code>rpm -ivh</code> n'installe pas les dépendances : préférer <code>dnf install</code>.","Inspecter un RPM tiers (<code>-q -p --scripts</code>) avant de l'installer.","Les fichiers de dépôt sont dans <code>/etc/yum.repos.d/*.repo</code>."]
+},
+{
+ id:"flatpak", chap:"Chap. 13", titre:"Applications Flatpak",
+ brief:"Flatpak installe des applications dans un environnement isolé (sandbox), avec leurs runtimes (ex. Freedesktop). Les dépôts distants résolvent les dépendances automatiquement. Installation au niveau système ou seulement pour l'utilisateur (<code>--user</code>). GNOME Logiciels sait aussi les gérer.",
+ exemple:`$ flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+$ flatpak remotes
+$ flatpak search gimp
+$ flatpak install flathub org.gimp.GIMP
+$ flatpak list
+$ flatpak uninstall org.gimp.GIMP`,
+ cmds:[
+  ["flatpak remote-add --if-not-exists NOM URL","Ajoute un dépôt distant"],
+  ["flatpak remotes","Liste les dépôts"],
+  ["flatpak search MOT","Cherche une application"],
+  ["flatpak install DEPOT ID","Installe une application ou un runtime"],
+  ["flatpak list","Applications et runtimes installés"],
+  ["flatpak info ID","Métadonnées"],
+  ["flatpak update","Met à jour"],
+  ["flatpak uninstall ID","Supprime"]
+ ],
+ pieges:["<code>--user</code> installe pour un seul utilisateur, sans droits root ; sans, c'est pour tout le système.","Un runtime manquant doit être installé avant l'application."]
+},
+{
+ id:"montage", chap:"Chap. 14", titre:"Disques, montage et recherche de fichiers",
+ brief:"Les disques sont des périphériques en mode bloc (<code>/dev/sdb</code>). Pour accéder à leur contenu, on monte le système de fichiers sur un répertoire. <code>df</code> montre l'espace, <code>lsblk</code> les périphériques, <code>find</code> cherche en temps réel, <code>locate</code> utilise un index.",
+ exemple:`$ lsblk -fp
+$ sudo mkdir /mnt/data
+$ sudo mount /dev/sdb1 /mnt/data
+$ df -h
+$ sudo umount /mnt/data
+$ find /home -user student -size +50M
+$ sudo updatedb && locate -i networkmanager.conf`,
+ cmds:[
+  ["df -h","Espace disque des systèmes montés (lisible)"],
+  ["lsblk  /  lsblk -fp","Périphériques bloc (avec systèmes de fichiers, UUID)"],
+  ["sudo mount /dev/sdb1 /mnt/data","Monte un système de fichiers"],
+  ["sudo umount /mnt/data","Démonte"],
+  ["lsof /mnt/data","Processus qui bloquent un démontage"],
+  ["sudo updatedb","Met à jour l'index de <code>locate</code>"],
+  ["locate [-i] motif","Recherche rapide via index (<code>-i</code> sans casse)"],
+  ["find CHEMIN -name \"*.conf\"","Recherche par nom"],
+  ["find / -user u -group g","Par propriétaire / groupe"],
+  ["find /usr/bin -size +50k","Par taille"],
+  ["find /home -mmin -120","Modifié depuis moins de 120 minutes"],
+  ["find /dev -type b","Par type (<code>b</code> bloc, <code>f</code> fichier, <code>d</code> répertoire)"]
+ ],
+ pieges:["<code>umount</code> échoue si un processus utilise le point de montage (même un shell dedans) : sortir du dossier ou repérer avec <code>lsof</code>.","<code>locate</code> ne voit pas les fichiers récents tant que <code>updatedb</code> n'a pas été lancé ; <code>find</code> est toujours à jour mais plus lent.","Un montage manuel n'est pas persistant après redémarrage.","En mode graphique, les supports amovibles sont montés sous <code>/run/media</code>."]
+},
+{
+ id:"process", chap:"Chap. 15", titre:"Processus, jobs et signaux",
+ brief:"Un processus est un programme en cours d'exécution ; il est en état running, sleeping, stopped ou zombie. Le contrôle des tâches (jobs) gère avant-plan et arrière-plan dans un terminal. Les signaux sont des interruptions logicielles. La charge moyenne (load average) estime la consommation des ressources sur 1, 5 et 15 minutes.",
+ exemple:`$ ./sauvegarde.sh &
+[1] 4581
+$ jobs
+$ fg %1               # ramène au premier plan (Ctrl+Z pour suspendre)
+$ bg                  # relance en arrière-plan
+$ kill -SIGTERM 4581
+$ pkill -SIGSTOP sauvegarde.sh
+$ uptime
+$ grep -c processor /proc/cpuinfo`,
+ cmds:[
+  ["ps aux  /  ps -ef","Tous les processus"],
+  ["ps aux --sort=-%mem | head","Les plus gourmands en mémoire"],
+  ["top","Vue en temps réel (<code>q</code> pour quitter)"],
+  ["uptime","Durée de fonctionnement et charge moyenne"],
+  ["cmd &","Lance en arrière-plan"],
+  ["Ctrl+Z  ·  bg  ·  fg %N","Suspend · relance en arrière-plan · ramène au premier plan"],
+  ["jobs","Liste les tâches du terminal"],
+  ["kill PID  /  kill -SIGTERM PID","Envoie SIGTERM (15, arrêt propre, par défaut)"],
+  ["kill -SIGKILL PID  /  kill -9 PID","Arrêt forcé, dernier recours"],
+  ["kill -SIGSTOP PID  /  -SIGCONT","Suspend / reprend"],
+  ["pkill nom  /  killall nom","Signale par nom de commande"],
+  ["pgrep -u user","Trouve des PID (ici par utilisateur)"]
+ ],
+ pieges:["<code>kill</code> envoie SIGTERM par défaut, ce qui laisse le programme se fermer proprement ; SIGKILL est brutal.","<code>jobs</code> ne montre que les tâches du terminal courant.","Charge moyenne : à comparer au nombre de CPU (<code>lscpu</code>). Une charge de 4 sur 4 CPU est pleine ; sur 2 CPU, c'est saturé."]
+},
+{
+ id:"systemd", chap:"Chap. 16", titre:"Services et démons (systemd)",
+ brief:"<code>systemd</code> démarre les ressources et les démons, au boot ou à chaud, via <code>systemctl</code>. Il gère des unités de service, de socket et de chemin. On peut démarrer, arrêter, redémarrer, activer au démarrage ou masquer une unité.",
+ exemple:`$ systemctl status sshd
+$ sudo systemctl enable --now httpd
+$ systemctl is-active httpd
+$ systemctl is-enabled httpd
+$ sudo systemctl reload sshd
+$ sudo systemctl mask sendmail.service
+$ journalctl -u httpd.service --since "1 hour ago"`,
+ cmds:[
+  ["systemctl status UNITE","État détaillé + derniers logs"],
+  ["sudo systemctl start / stop / restart UNITE","Maintenant : démarrer / arrêter / redémarrer"],
+  ["sudo systemctl reload UNITE","Recharge la config sans coupure"],
+  ["sudo systemctl enable UNITE  /  disable","Au démarrage : activer / désactiver"],
+  ["sudo systemctl enable --now UNITE","Active au boot ET démarre maintenant"],
+  ["systemctl is-active UNITE","Tourne-t-il maintenant ?"],
+  ["systemctl is-enabled UNITE","Démarre-t-il au boot ?"],
+  ["sudo systemctl mask UNITE  /  unmask","Interdit tout démarrage, même par dépendance"],
+  ["systemctl list-units --type=service","Services chargés"],
+  ["systemctl list-unit-files --type=service","Tous les fichiers d'unités et leur état"],
+  ["systemctl list-units --type=socket --all","Unités socket"],
+  ["journalctl -u UNITE  /  journalctl -xeu UNITE","Logs d'un service · diagnostic d'échec"],
+  ["sudo systemctl reboot","Redémarre la machine"]
+ ],
+ pieges:["<code>enable</code> ≠ <code>start</code> : le premier agit au prochain démarrage, le second maintenant. D'où <code>enable --now</code>.","<code>mask</code> est plus fort que <code>disable</code> : l'unité ne peut plus être lancée du tout.","Préférer <code>reload</code> à <code>restart</code> quand c'est possible pour ne pas couper les connexions."]
+},
+{
+ id:"reseau", chap:"Chap. 17", titre:"Réseau : concepts et diagnostic",
+ brief:"TCP/IP en couches. IPv4 : 32 bits en quatre octets, découpés en préfixe réseau et identifiant d'hôte par un masque (ex. /24). IPv6 : 128 bits en hexadécimal, souvent en /64. RHEL utilise des noms d'interface persistants (ex. <code>ens3</code>, <code>enp8s0</code>) basés sur le firmware et le bus PCI. La table de routage indique par où sortent les paquets.",
+ exemple:`$ ip -br addr
+$ ip route
+$ ping -c3 172.25.250.254
+$ tracepath classroom.example.com
+$ mtr -r -c 5 access.redhat.com
+$ ss -lt`,
+ cmds:[
+  ["ip -br addr","Adresses par interface (résumé)"],
+  ["ip addr show ens4","Détails d'une interface"],
+  ["ip link  /  ip -s link show ens3","État des interfaces · statistiques"],
+  ["ip route","Table de routage"],
+  ["ping -c3 HOTE","Teste la connectivité (3 paquets) ; <code>ping6</code> pour IPv6"],
+  ["tracepath HOTE  /  traceroute  /  mtr","Trace le chemin réseau"],
+  ["ss -lt","Sockets TCP en écoute"],
+  ["ss -tan","Toutes les connexions TCP, numériques"]
+ ],
+ pieges:["Sans <code>-c</code>, <code>ping</code> tourne indéfiniment (Ctrl+C pour arrêter).","<code>ss</code> remplace <code>netstat</code>.","Les noms d'interface ne sont plus <code>eth0</code> : ils sont persistants mais dépendent du matériel."]
+},
+{
+ id:"nmcli", chap:"Chap. 18", titre:"Configuration réseau avec NetworkManager",
+ brief:"Le démon NetworkManager gère les périphériques et les connexions ; <code>nmcli</code> est son outil en ligne de commande. RHEL 10 stocke les profils au format keyfile (INI) dans <code>/etc/NetworkManager/system-connections</code> : l'ancien format ifcfg est supprimé. Le nom d'hôte (FQDN) se gère avec <code>hostnamectl</code>, la résolution locale avec <code>/etc/hosts</code>.",
+ exemple:`$ nmcli dev status
+$ nmcli con show
+$ sudo nmcli con add con-name static-addr type ethernet ifname ens4 \\
+    ipv4.method manual ipv4.addresses 192.168.0.10/24 \\
+    ipv4.gateway 192.168.0.1 ipv4.dns 192.168.0.1
+$ sudo nmcli con up static-addr
+$ sudo hostnamectl set-hostname serveur1.exemple.fr`,
+ cmds:[
+  ["nmcli dev status","État des périphériques"],
+  ["nmcli con show [NOM]","Connexions (ou détails d'une connexion)"],
+  ["nmcli con add con-name N type ethernet ifname IF ...","Crée un profil"],
+  ["nmcli con mod N ipv4.method manual ipv4.addresses A/24","Modifie un profil"],
+  ["nmcli con up N  /  down N","Active / désactive"],
+  ["nmcli con reload","Relit les fichiers de profil"],
+  ["hostnamectl status","Nom d'hôte actuel"],
+  ["hostnamectl set-hostname NOM","Change le nom d'hôte"],
+  ["cat /etc/hosts  ·  getent hosts NOM","Résolution locale · test de résolution"]
+ ],
+ pieges:["<code>nmcli con mod</code> ne s'applique pas tout seul : il faut <code>nmcli con up</code>.","Avec <code>ipv4.method manual</code>, il faut fournir une adresse.","Les profils <code>ifcfg-*</code> n'existent plus dans RHEL 10."]
+},
+{
+ id:"ssh", chap:"Chap. 19", titre:"SSH : clés d'hôte et authentification par clé",
+ brief:"SSH vérifie l'identité du serveur grâce à ses clés d'hôte, mémorisées côté client dans <code>known_hosts</code> (par utilisateur ou système). Pour l'utilisateur : mot de passe ou paire de clés (<code>ssh-keygen</code>). La clé publique est copiée sur le serveur ; la clé privée reste chez toi. Durcissement : désactiver la connexion directe de root et l'authentification par mot de passe dans <code>sshd_config</code>.",
+ exemple:`$ ssh-keygen -f ~/.ssh/review_key
+$ ssh-copy-id -i ~/.ssh/review_key.pub student@servera
+$ ssh -i ~/.ssh/review_key student@servera
+# Sur le serveur, dans /etc/ssh/sshd_config :
+#   PermitRootLogin no
+#   PasswordAuthentication no
+$ sudo systemctl reload sshd`,
+ cmds:[
+  ["ssh user@hote","Connexion SSH"],
+  ["ssh -i cle user@hote","Avec une clé précise"],
+  ["ssh-keygen","Génère une paire de clés (<code>-f</code> pour choisir le nom)"],
+  ["ssh-copy-id -i cle.pub user@hote","Installe la clé publique sur le serveur"],
+  ["ssh-keygen -l -f fichier.pub","Empreinte d'une clé (à comparer avant d'accepter)"],
+  ["ssh-keyscan -t ed25519 hote","Récupère la clé d'hôte publique d'un serveur"],
+  ["/etc/ssh/sshd_config","Configuration du serveur (<code>PermitRootLogin</code>, <code>PasswordAuthentication</code>)"],
+  ["sudo systemctl reload sshd","Applique les changements du serveur"],
+  ["/etc/ssh/ssh_known_hosts  ·  ~/.ssh/known_hosts","Hôtes connus (système · utilisateur)"]
+ ],
+ pieges:["Ne copier que la clé <strong>publique</strong> (<code>.pub</code>) ; la privée ne quitte jamais ta machine, en <code>chmod 600</code>.","Tester la connexion par clé <em>avant</em> de désactiver les mots de passe, sinon risque de s'enfermer dehors.","Depuis RHEL 9, <code>PermitRootLogin</code> vaut <code>prohibit-password</code> par défaut.","Après modification de <code>sshd_config</code>, recharger le service."]
+}
+];
+
+const list = document.getElementById('list');
+const toc = document.getElementById('toc');
+const empty = document.getElementById('empty');
+
+function el(tag, attrs, html){
+  const e = document.createElement(tag);
+  if(attrs) for(const k in attrs) e.setAttribute(k, attrs[k]);
+  if(html !== undefined) e.innerHTML = html;
+  return e;
+}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+async function copyText(text, btn){
+  try{
+    await navigator.clipboard.writeText(text);
+  }catch(e){
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    try{document.execCommand('copy');}catch(_){}
+    document.body.removeChild(ta);
+  }
+  const old = btn.textContent;
+  btn.textContent = 'Copié'; btn.classList.add('done');
+  setTimeout(()=>{btn.textContent = old; btn.classList.remove('done');}, 1200);
+}
+function stripTags(h){const d=document.createElement('div');d.innerHTML=h;return d.textContent;}
+
+N.forEach((n, i) => {
+  const s = el('section', {class:'card', id:n.id});
+  s.appendChild(el('span', {class:'chap'}, n.chap));
+  s.appendChild(el('h2', null, (i+1) + '. ' + esc(n.titre)));
+  s.appendChild(el('p', {class:'brief'}, n.brief));
+
+  // Exemple
+  s.appendChild(el('h3', null, 'Exemple'));
+  const wrap = el('div', {class:'exwrap'});
+  const pre = el('pre');
+  const copyLines = [];
+  n.exemple.split('\n').forEach((line, idx, arr) => {
+    const span = el('span');
+    if(line.startsWith('$ ')){
+      span.innerHTML = '<span class="p">$ </span>' + esc(line.slice(2));
+      copyLines.push(line.slice(2));
+    } else if(line.startsWith('#')){
+      span.innerHTML = '<span class="c">' + esc(line) + '</span>';
+    } else {
+      span.innerHTML = '<span class="c">' + esc(line) + '</span>';
+    }
+    // commentaire en fin de ligne de commande
+    if(line.startsWith('$ ') && /\s#\s/.test(line)){
+      const parts = line.slice(2).split(/\s+#\s/);
+      span.innerHTML = '<span class="p">$ </span>' + esc(parts[0]) + '  <span class="c"># ' + esc(parts.slice(1).join(' # ')) + '</span>';
+      copyLines[copyLines.length-1] = parts[0];
+    }
+    pre.appendChild(span);
+    if(idx < arr.length-1) pre.appendChild(document.createTextNode('\n'));
+  });
+  wrap.appendChild(pre);
+  const cb = el('button', {class:'copy', type:'button', 'aria-label':'Copier les commandes de l\'exemple'}, 'Copier');
+  cb.addEventListener('click', () => copyText(copyLines.join('\n'), cb));
+  wrap.appendChild(cb);
+  s.appendChild(wrap);
+
+  // Commandes
+  s.appendChild(el('h3', null, 'Commandes à retenir'));
+  const tbl = el('table', {class:'cmds'});
+  const tb = el('tbody');
+  n.cmds.forEach(([c, d]) => {
+    const tr = el('tr');
+    const td1 = el('td'); const box = el('div', {class:'cmd'});
+    box.appendChild(el('code', null, esc(c)));
+    const b = el('button', {class:'copy', type:'button', 'aria-label':'Copier la commande'}, 'Copier');
+    b.addEventListener('click', () => copyText(c, b));
+    box.appendChild(b); td1.appendChild(box);
+    tr.appendChild(td1);
+    tr.appendChild(el('td', null, d));
+    tb.appendChild(tr);
+  });
+  tbl.appendChild(tb); s.appendChild(tbl);
+
+  // Pièges
+  if(n.pieges && n.pieges.length){
+    s.appendChild(el('h3', null, 'Pièges et erreurs classiques'));
+    const t = el('div', {class:'traps'});
+    const ul = el('ul');
+    n.pieges.forEach(p => ul.appendChild(el('li', null, p)));
+    t.appendChild(ul); s.appendChild(t);
+  }
+
+  s.dataset.search = stripTags(n.titre + ' ' + n.chap + ' ' + n.brief + ' ' + n.exemple + ' ' + n.cmds.map(x=>x.join(' ')).join(' ') + ' ' + (n.pieges||[]).join(' ')).toLowerCase();
+  list.appendChild(s);
+
+  const a = el('a', {href:'#'+n.id}, '<span class="n">' + (i+1) + '</span>' + esc(n.titre));
+  a.dataset.target = n.id;
+  toc.appendChild(a);
+});
+
+const q = document.getElementById('q');
+q.addEventListener('input', () => {
+  const term = q.value.trim().toLowerCase();
+  let shown = 0;
+  document.querySelectorAll('section.card').forEach(sec => {
+    const ok = !term || sec.dataset.search.includes(term);
+    sec.classList.toggle('hidden', !ok);
+    if(ok) shown++;
+    // filtrage fin des lignes de commandes
+    sec.querySelectorAll('table.cmds tr').forEach(tr => {
+      const txt = tr.textContent.toLowerCase();
+      const secMatchesOnTitle = !term || sec.querySelector('h2').textContent.toLowerCase().includes(term);
+      tr.classList.toggle('hidden', !!term && !secMatchesOnTitle && !txt.includes(term) && sec.dataset.search.includes(term) && Array.from(sec.querySelectorAll('table.cmds tr')).some(r => r.textContent.toLowerCase().includes(term)));
+    });
+  });
+  toc.querySelectorAll('a').forEach(a => {
+    const sec = document.getElementById(a.dataset.target);
+    a.classList.toggle('hidden', sec.classList.contains('hidden'));
+  });
+  empty.style.display = shown ? 'none' : 'block';
+});
+</script>
+</body>
+</html>
