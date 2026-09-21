@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RH124 – Fiches de révision</title>
+<title>RH124 / RH134 – Fiches de révision</title>
 <style>
 :root{
   --bg:#fafaf9; --panel:#ffffff; --ink:#1c1c1e; --muted:#6b6b70; --line:#e4e2df;
@@ -19,6 +19,13 @@ header.top{position:sticky;top:0;z-index:10;background:rgba(250,250,249,.95);bac
 .brand span{color:var(--accent)}
 #q{flex:1;min-width:200px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff}
 #q:focus{outline:2px solid var(--accent);outline-offset:1px}
+.levels{max-width:1100px;margin:0 auto;padding:10px 16px 0}
+.levels-track{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:#efeeec;border-radius:12px;padding:4px}
+.level{appearance:none;border:none;background:transparent;border-radius:9px;padding:11px 10px;font:inherit;font-weight:700;font-size:15px;color:var(--muted);cursor:pointer;text-align:center;transition:background-color .15s,color .15s}
+.level:not(.active):hover{background:#e4e2df;color:var(--ink)}
+.level .level-sub{display:block;font-weight:600;font-size:12px;margin-top:2px;opacity:.8}
+.level.active{background:var(--accent);color:#fff;box-shadow:0 1px 3px rgba(201,25,11,.35)}
+.level.active .level-sub{opacity:.92}
 .tabs{max-width:1100px;margin:0 auto;padding:0 12px;display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin}
 .tabs::-webkit-scrollbar{height:5px}
 .tabs::-webkit-scrollbar-thumb{background:var(--line);border-radius:99px}
@@ -28,7 +35,7 @@ header.top{position:sticky;top:0;z-index:10;background:rgba(250,250,249,.95);bac
 .tab .cnt{color:var(--muted);font-weight:500;font-size:11.5px;margin-left:3px}
 .tab.active .cnt{color:var(--accent)}
 .wrap{max-width:1100px;margin:0 auto;padding:0 16px 60px;display:grid;grid-template-columns:230px 1fr;gap:32px}
-nav.toc{position:sticky;top:118px;align-self:start;max-height:calc(100vh - 138px);overflow:auto;padding-top:24px;font-size:14px}
+nav.toc{position:sticky;top:180px;align-self:start;max-height:calc(100vh - 200px);overflow:auto;padding-top:24px;font-size:14px}
 nav.toc a{display:block;padding:4px 8px;border-radius:6px;color:var(--muted);text-decoration:none}
 nav.toc a:hover{background:var(--accent-soft);color:var(--accent)}
 nav.toc .n{display:inline-block;width:22px;color:var(--accent);font-variant-numeric:tabular-nums}
@@ -91,8 +98,14 @@ footer{color:var(--muted);font-size:13px;text-align:center;padding:10px 0 40px}
 <body>
 <header class="top">
   <div class="top-in">
-    <div class="brand">RH124 <span>·</span> Fiches de révision</div>
+    <div class="brand">Red Hat <span>·</span> Fiches de révision</div>
     <input id="q" type="search" placeholder="Rechercher une commande ou une notion (ex. chmod, umask, systemctl…)" aria-label="Rechercher">
+  </div>
+  <div class="levels">
+    <div class="levels-track" id="levels" role="tablist" aria-label="Niveau">
+      <button class="level active" type="button" role="tab" data-level="1">Niveau 1<span class="level-sub">RH124 · Administration I</span></button>
+      <button class="level" type="button" role="tab" data-level="2">Niveau 2<span class="level-sub">RH134 · Administration II</span></button>
+    </div>
   </div>
   <div class="tabs" id="tabs" role="tablist" aria-label="Catégories"></div>
 </header>
@@ -100,10 +113,10 @@ footer{color:var(--muted);font-size:13px;text-align:center;padding:10px 0 40px}
 <div class="wrap">
   <nav class="toc" id="toc" aria-label="Notions"></nav>
   <main>
-    <h1>Red Hat System Administration I (RH124)</h1>
-    <p class="sub">RHEL 10 · Fiches par notion : l'essentiel, un exemple, les commandes à retenir et les pièges.</p>
+    <h1 id="page-title">Red Hat System Administration I (RH124)</h1>
+    <p class="sub" id="page-sub">RHEL 10 · Fiches par notion : l'essentiel, un exemple, les commandes à retenir et les pièges.</p>
 
-    <div class="express">
+    <div class="express" id="express-1">
       <h2>Résumé express</h2>
       <ul>
         <li><button class="jump" type="button" data-cat="debuter">Prise en main :</button> RHEL, le shell Bash, l'aide locale (<code>man</code>), l'assistant IA Lightspeed et l'enregistrement du système chez Red Hat.</li>
@@ -115,6 +128,18 @@ footer{color:var(--muted);font-size:13px;text-align:center;padding:10px 0 40px}
       </ul>
     </div>
 
+    <div class="express hidden" id="express-2">
+      <h2>Résumé express</h2>
+      <ul>
+        <li><button class="jump" type="button" data-cat="scripting">Scripts & automatisation :</button> scripts Bash, expressions régulières, planification de tâches utilisateur (<code>at</code>, <code>cron</code>) et système (minuteurs <code>systemd</code>).</li>
+        <li><button class="jump" type="button" data-cat="journalisation">Journalisation & sécurité :</button> <code>journald</code>/<code>rsyslog</code>, <code>chrony</code>, SELinux, pare-feu et étiquetage de ports.</li>
+        <li><button class="jump" type="button" data-cat="fichiers-transferts">Fichiers & transferts :</button> archives <code>tar</code> compressées, transfert et synchronisation avec <code>scp</code>/<code>rsync</code>.</li>
+        <li><button class="jump" type="button" data-cat="stockage-perf">Stockage & performance :</button> profils <code>tuned</code>, partitions et swap, LVM, stockage réseau NFS/autofs.</li>
+        <li><button class="jump" type="button" data-cat="demarrage">Démarrage & récupération :</button> dépannage GRUB2 et cibles de démarrage, récupération de l'accès root.</li>
+        <li><button class="jump" type="button" data-cat="deploiement">Déploiement & conteneurs :</button> installation RHEL (interactive/Kickstart), Podman, RHEL en mode image.</li>
+      </ul>
+    </div>
+
     <div class="cat-heading">
       <h2 id="cat-title">Toutes les notions</h2>
       <span class="cat-count" id="cat-count"></span>
@@ -122,13 +147,13 @@ footer{color:var(--muted);font-size:13px;text-align:center;padding:10px 0 40px}
 
     <div id="list"></div>
     <div id="empty">Aucune notion ne correspond à cette recherche.</div>
-    <footer>Fiches établies à partir du support RH124 (RHEL 10.0). Les commandes sont à tester sur un système de lab.</footer>
+    <footer id="page-footer">Fiches établies à partir du support RH124 (RHEL 10.0). Les commandes sont à tester sur un système de lab.</footer>
   </main>
 </div>
 
 <script>
 /* Chaque notion : id, chap, titre, brief, exemple (lignes "$ " = commandes copiables), cmds [commande, description], pieges [] */
-const N = [
+const N1 = [
 {
  id:"contexte", cat:"debuter", chap:"Chap. 1", titre:"RHEL et l'Open Source",
  brief:"Un logiciel Open Source a un code source que tout le monde peut utiliser, étudier, modifier et partager. Une distribution Linux = noyau Linux + bibliothèques + programmes. RHEL est la distribution Linux commerciale de Red Hat : elle stabilise des projets communautaires pour les proposer avec support en entreprise. Un abonnement Red Hat Developer gratuit donne accès à RHEL pour apprendre.",
@@ -558,7 +583,540 @@ $ sudo systemctl reload sshd`,
 }
 ];
 
-const CATS = [
+/* ===== Niveau 2 : RH134 (Red Hat System Administration II) ===== */
+const N2 = [
+{
+ id:"scripts", cat:"scripting", chap:"Chap. 1", titre:"Scripts shell et ligne de commande",
+ brief:"Une variable shell (<code>NAME=valeur</code>, sans espace autour du <code>=</code>) reste locale à la session ; <code>export</code> en fait une variable d'environnement transmise aux programmes lancés depuis ce shell. Un script Bash démarre par un <strong>shebang</strong> (<code>#!/usr/bin/bash</code>), doit être rendu exécutable avec <code>chmod +x</code>, et reçoit ses arguments via les <strong>paramètres positionnels</strong> <code>$1</code>, <code>$2</code>... (accolades obligatoires au-delà de <code>$9</code>, ex. <code>${10}</code>). Les tests (<code>[[ ... ]]</code> ou <code>test</code>) et le code de sortie <code>$?</code> pilotent les structures <code>if/then/elif/else</code>, <code>while</code>, <code>until</code> et <code>for</code>. Les guillemets doubles autorisent l'expansion de variables et de commandes, les apostrophes l'interdisent totalement.",
+ exemple:`$ cat ~/bin/checkdisk.sh
+#!/usr/bin/bash
+USAGE=$(df -h / | awk 'NR==2{print $5}' | tr -d '%')
+if [[ "$USAGE" -ge 80 ]]; then
+  echo "ALERTE: disque plein à \${USAGE}%" >&2
+  exit 1
+fi
+$ chmod +x ~/bin/checkdisk.sh
+$ checkdisk.sh; echo "Code de sortie: $?"
+Code de sortie: 0`,
+ cmds:[
+  ["VAR=valeur", "Définit une variable shell locale à la session courante (aucun espace autour du <code>=</code>)"],
+  ["export VAR=valeur", "Définit et exporte une variable en tant que variable d'environnement pour les programmes enfants"],
+  ["unset VAR", "Supprime la définition d'une variable ou d'un alias"],
+  ["export -n VAR", "Retire une variable des variables d'environnement sans la supprimer"],
+  ["${VAR}", "Délimite explicitement le nom d'une variable pour éviter une expansion incorrecte"],
+  ["${array[@]}", "Accède à tous les éléments d'un tableau (indexé à partir de 0)"],
+  ["$((expr))", "Expansion arithmétique Bash pour additions, soustractions, etc."],
+  ["#!/usr/bin/bash", "Shebang indiquant l'interpréteur à utiliser lors d'une exécution directe du script"],
+  ["$0, $1, ${10}", "Paramètres positionnels : nom du script, premier argument, dixième argument (accolades requises au-delà de 9)"],
+  ["set -- a b c", "Réaffecte en une seule fois les paramètres positionnels"],
+  ["[[ COND ]] / test COND", "Évalue une condition (comparaisons numériques -eq/-gt/-lt, chaînes =/!=, fichiers -f/-d/-r)"],
+  ["exit N", "Termine immédiatement le script en renvoyant le code de sortie N (0 = succès)"],
+  ["$?", "Contient le code de sortie de la dernière commande exécutée"],
+  ["for VAR in LIST; do ... done", "Boucle sur une liste de chaînes (accolades, plages <code>{1..3}</code>, substitution de commande)"]
+ ],
+ pieges:["Aucun espace n'est toléré autour du <code>=</code> lors d'une affectation de variable, sinon Bash interprète la commande différemment.","<code>echo \"Repeat ${COUNT}x\"</code> nécessite les accolades : sans elles, Bash cherche une variable inexistante comme <code>COUNTx</code>.","Un script shell n'a pas besoin d'être exporté comme variable d'environnement pour fonctionner, mais il doit être exécutable (<code>chmod +x</code>) et, hors <code>PATH</code>, appelé avec <code>./script.sh</code>.","La commande <code>set --</code> réaffecte les paramètres positionnels et supprime silencieusement ceux au-delà du dernier argument fourni.","Les boucles <code>while</code>/<code>until</code> testent la condition <em>avant</em> chaque itération : si elle échoue dès le départ, le corps de la boucle ne s'exécute jamais."]
+},
+{
+ id:"regex", cat:"scripting", chap:"Chap. 2", titre:"Expressions régulières",
+ brief:"Une expression régulière (regex) filtre du texte par motif, utilisée notamment par <code>grep</code>, <code>less</code> et <code>vim</code>. Il existe deux syntaxes : <strong>de base</strong> (BRE, par défaut pour <code>grep</code>, <code>sed</code>, <code>vim</code>) où <code>| + ? ( ) { }</code> doivent être échappés pour avoir un sens spécial, et <strong>étendue</strong> (ERE, avec <code>grep -E</code> ou <code>sed -E</code>) où c'est l'inverse. Les ancres <code>^</code> et <code>$</code> fixent le début/la fin de ligne, le point <code>.</code> représente un caractère unique, et les multiplicateurs <code>*</code>, <code>+</code>, <code>?</code>, <code>{n,m}</code> répètent l'élément précédent. Les classes <code>[:alpha:]</code>, <code>[:digit:]</code>, etc. couvrent des ensembles de caractères indépendants des paramètres régionaux.",
+ exemple:`$ cat /etc/hosts
+127.0.0.1 localhost
+192.168.1.10 servera
+192.168.1.20 serverb
+# rechercher les lignes qui commencent par une IP
+$ grep -E '^[0-9]{1,3}(\\.[0-9]{1,3}){3}' /etc/hosts
+127.0.0.1 localhost
+192.168.1.10 servera
+192.168.1.20 serverb
+$ grep -v '^#' /etc/hosts | grep -i server`,
+ cmds:[
+  ["^motif", "Ancre le motif en début de ligne"],
+  ["motif$", "Ancre le motif en fin de ligne"],
+  [".", "Correspond à un seul caractère quelconque"],
+  ["*", "L'élément précédent est répété zéro ou plusieurs fois"],
+  ["+ / ? (ERE)", "Une ou plusieurs fois / zéro ou une fois (nécessite <code>grep -E</code> en syntaxe de base)"],
+  ["{n,m} / \\{n,m\\}", "Répète l'élément précédent entre n et m fois (ERE / BRE)"],
+  ["[:alpha:], [:digit:], [:space:]", "Classes de caractères indépendantes des paramètres régionaux, à utiliser entre crochets doubles <code>[[:alpha:]]</code>"],
+  ["grep -i motif fichier", "Recherche insensible à la casse"],
+  ["grep -v motif fichier", "Affiche uniquement les lignes qui ne correspondent pas au motif"],
+  ["grep -r motif dossier", "Recherche récursive dans un ensemble de fichiers/répertoires"],
+  ["grep -A N / -B N motif", "Affiche N lignes après / avant chaque correspondance"],
+  ["grep -e m1 -e m2", "Combine plusieurs motifs avec un OU logique"],
+  ["grep -E motif", "Utilise la syntaxe d'expression régulière étendue"]
+ ],
+ pieges:["Encadrer systématiquement une regex entre apostrophes pour empêcher le shell d'interpréter les métacaractères (<code>$</code>, <code>*</code>, <code>{}</code>) avant <code>grep</code>.","Le filtrage par motif du shell (globbing) et les expressions régulières partagent des métacaractères similaires (<code>*</code>, <code>?</code>) mais suivent des règles d'interprétation différentes : ne pas les confondre.","<code>grep</code>, <code>sed</code> et <code>vim</code> utilisent par défaut la syntaxe de base (BRE) où <code>+</code>, <code>?</code>, <code>|</code>, <code>{}</code> doivent être échappés avec <code>\\</code> pour être actifs ; sans l'option <code>-E</code>, ces caractères sont pris littéralement.","Une plage numérique mal formée comme <code>5-2</code> est invalide : le premier nombre doit toujours être inférieur ou égal au second."]
+},
+{
+ id:"cron-user", cat:"scripting", chap:"Chap. 3", titre:"Planification de tâches utilisateur",
+ brief:"La commande <code>at TIMESPEC</code> planifie l'exécution unique et différée de commandes lues depuis STDIN ou un fichier ; le démon <code>atd</code> les exécute puis les retire de la file. <code>atq</code> (ou <code>at -l</code>) liste les tâches en attente, <code>at -c NUM</code> affiche leur contenu, et <code>atrm NUM</code> les supprime. Pour les tâches récurrentes, chaque utilisateur gère son propre fichier via <code>crontab -e</code>, lu par le démon <code>crond</code> ; le format comporte cinq champs (minute, heure, jour du mois, mois, jour de la semaine) suivis de la commande, avec <code>*</code>, plages <code>x-y</code>, listes <code>x,y</code> et pas <code>*/x</code>.",
+ exemple:`$ echo "tar czf /home/user/backup.tgz /home/user/data" | at now +10min
+warning: commands will be executed using /bin/sh
+job 5 at Wed May 28 21:15:00 2025
+$ atq
+5 Wed May 28 21:15:00 2025 a user
+$ at -c 5
+$ crontab -e
+# sauvegarde quotidienne à 23h30 du lundi au vendredi
+30 23 * * 1-5 /home/user/bin/backup.sh
+$ crontab -l`,
+ cmds:[
+  ["at TIMESPEC", "Planifie une tâche différée unique ; lit les commandes depuis STDIN (Ctrl+D pour terminer)"],
+  ["at -q LETTRE TIMESPEC", "Planifie la tâche dans une file d'attente spécifique (a-z, A-Z), priorité selon la lettre"],
+  ["atq / at -l", "Liste les tâches différées en attente de l'utilisateur actuel"],
+  ["at -c NUMTACHE", "Affiche les commandes et l'environnement d'une tâche différée en attente"],
+  ["atrm NUMTACHE", "Supprime une tâche différée planifiée"],
+  ["crontab -l", "Liste les tâches récurrentes de l'utilisateur actuel"],
+  ["crontab -e", "Modifie les tâches cron de l'utilisateur actuel (éditeur défini par <code>$EDITOR</code>)"],
+  ["crontab -r", "Supprime toutes les tâches cron de l'utilisateur actuel"],
+  ["crontab -u user -l", "Gère les tâches cron d'un autre utilisateur (utilisateur privilégié uniquement)"],
+  ["min heure jour mois jsem commande", "Format d'une ligne crontab utilisateur (5 champs + commande)"],
+  ["*/N", "Notation de pas : exécute la tâche toutes les N unités du champ concerné"],
+  ["MAILTO=adresse", "Variable crontab définissant le destinataire des sorties/erreurs envoyées par e-mail"]
+ ],
+ pieges:["Sans redirection de la sortie, <code>crond</code> envoie par e-mail toute sortie ou erreur générée par une tâche cron, ce qui nécessite une configuration de messagerie fonctionnelle.","Une plage comme <code>Fri-Tue</code> (5-2) est invalide car le premier nombre doit être inférieur ou égal au second ; il faut la découper en liste de plages, ex. <code>0-2,5-6</code>.","Utiliser <code>crontab</code> en tant qu'utilisateur <code>root</code> pour des tâches personnelles est déconseillé : cela expose des tâches exécutées avec les privilèges root.","Seul l'utilisateur root peut afficher et gérer les tâches <code>at</code>/cron de tous les utilisateurs ; un utilisateur standard ne voit que les siennes.","Un signe pourcentage (<code>%</code>) non échappé dans la commande crontab est traité comme un saut de ligne, le reste devenant l'entrée STDIN de la commande."]
+},
+{
+ id:"cron-systeme", cat:"scripting", chap:"Chap. 4", titre:"Planification des tâches système",
+ brief:"Depuis RHEL 10, les <strong>unités de minuteur systemd</strong> (<code>.timer</code>) remplacent cron pour la plupart des tâches système récurrentes ; elles activent une unité associée (généralement un <code>.service</code>) via <code>OnCalendar=</code> (temps absolu) ou <code>OnUnitActiveSec=</code> (temps relatif). L'outil <code>systemd-tmpfiles</code>, déclenché par <code>systemd-tmpfiles-clean.timer</code>, crée, sécurise ou purge fichiers et répertoires temporaires selon les règles définies dans <code>/etc/tmpfiles.d/*.conf</code>. Pour les tâches système à l'ancienne, on ajoute un fichier crontab dans <code>/etc/cron.d/</code> (jamais dans <code>/etc/crontab</code> directement) avec un champ utilisateur supplémentaire ; <code>anacron</code> garantit l'exécution des tâches quotidiennes/hebdomadaires/mensuelles même après une extinction prolongée.",
+ exemple:`# copier l'unité pour ne pas être écrasé par une mise à jour
+$ sudo cp /usr/lib/systemd/system/sysstat-collect.timer /etc/systemd/system/
+$ sudo vim /etc/systemd/system/sysstat-collect.timer
+# OnCalendar=*:00/2
+$ sudo systemctl daemon-reload
+$ sudo systemctl enable --now sysstat-collect.timer
+$ systemctl list-timers sysstat-collect.timer
+$ cat /etc/cron.d/usercount
+*/3 * * * * root logger "There are \`w -h | wc -l\` active users"`,
+ cmds:[
+  ["systemctl list-units -t timer", "Liste les unités de minuteur chargées (actives, en attente, en échec)"],
+  ["systemctl list-unit-files -t timer", "Liste tous les fichiers d'unité minuteur installés, y compris les modèles"],
+  ["systemctl enable --now UNITE.timer", "Active au démarrage et démarre immédiatement une unité de minuteur"],
+  ["systemctl daemon-reload", "Recharge la configuration systemd après modification d'un fichier d'unité"],
+  ["systemctl status UNITE.timer", "Affiche l'état d'une unité de minuteur et de son unité déclenchée"],
+  ["OnCalendar=", "Directive <code>[Timer]</code> définissant un déclenchement à date/heure absolue ou récurrente"],
+  ["OnUnitActiveSec=", "Directive <code>[Timer]</code> déclenchant l'unité N temps après sa dernière activation"],
+  ["systemd-tmpfiles --create fichier.conf", "Applique une configuration tmpfiles : crée fichiers/répertoires définis"],
+  ["systemd-tmpfiles --clean fichier.conf", "Purge les fichiers dépassant l'ancienneté maximale définie dans la configuration"],
+  ["d /chemin mode uid gid age", "Ligne tmpfiles.d : crée le répertoire s'il n'existe pas (type <code>d</code>)"],
+  ["/etc/cron.d/fichier", "Emplacement recommandé pour les crontabs système personnalisés (champ utilisateur ajouté)"],
+  ["run-parts /etc/cron.hourly", "Exécute tous les scripts exécutables d'un répertoire (utilisé par 0hourly)"],
+  ["/etc/anacrontab", "Configuration anacron (période en jours, délai en minutes, identifiant, commande)"]
+ ],
+ pieges:["Ne jamais modifier un fichier sous <code>/usr/lib/systemd/system/</code> : toute mise à jour de paquetage l'écrase. Copier vers <code>/etc/systemd/system/</code> avant modification.","Oublier <code>systemctl daemon-reload</code> après avoir modifié un fichier d'unité fait que systemd continue d'utiliser l'ancienne configuration en mémoire.","<code>systemctl enable</code> seul n'active l'unité qu'au prochain démarrage ; sans <code>--now</code>, elle ne démarre pas immédiatement.","Ne jamais éditer <code>/etc/crontab</code> directement : il doit rester vide (hors commentaires) ; placer les tâches système dans des fichiers sous <code>/etc/cron.d/</code>.","Les fichiers crontab système ont un champ <em>utilisateur</em> supplémentaire avant la commande, absent des crontabs utilisateur personnels."]
+},
+{
+ id:"journaux", cat:"journalisation", chap:"Chap. 5", titre:"Analyse et stockage des journaux",
+ brief:"Le service <code>systemd-journald</code> collecte les messages du noyau, du démarrage et des démons dans un journal binaire structuré, interrogeable avec <code>journalctl</code> (filtres <code>-p</code> priorité, <code>-u</code> unité, <code>--since</code>/<code>--until</code>, <code>-b</code> démarrage, champs comme <code>_PID</code>). Par défaut ce journal est volatil (<code>/run/log/journal</code>) ; créer <code>/var/log/journal</code> et exécuter <code>journalctl --flush</code> le rend persistant entre redémarrages. Le service <code>rsyslog</code> lit ces messages via son module <code>imjournal</code> et les trie dans des fichiers sous <code>/var/log</code> (<code>messages</code>, <code>secure</code>, <code>maillog</code>, <code>cron</code>) selon des règles <strong>fonction.priorité</strong> définies dans <code>/etc/rsyslog.conf</code> et <code>/etc/rsyslog.d/*.conf</code>. Le service <code>chronyd</code> synchronise l'horloge via NTP (<code>chronyc sources</code>), et <code>timedatectl</code> gère fuseau horaire et heure système.",
+ exemple:`$ sudo mkdir /var/log/journal
+$ sudo journalctl --flush
+$ journalctl -u sshd.service --since "-1 hour"
+$ journalctl -p err -b
+$ echo "authpriv.alert /var/log/auth-errors" | sudo tee /etc/rsyslog.d/auth-errors.conf
+$ sudo systemctl restart rsyslog
+$ logger -p authpriv.alert "test alerte auth"
+$ chronyc sources -v`,
+ cmds:[
+  ["journalctl -n N", "Affiche les N dernières entrées du journal (10 par défaut)"],
+  ["journalctl -f", "Suit le journal en continu, comme <code>tail -f</code>"],
+  ["journalctl -p PRIORITE", "Filtre les entrées à partir d'un niveau de priorité (ex. <code>err</code>) et plus critique"],
+  ["journalctl -u UNITE", "Affiche les messages liés à une unité systemd spécifique"],
+  ["journalctl --since / --until", "Limite la sortie à une plage temporelle (\"AAAA-MM-JJ hh:mm:ss\", <code>yesterday</code>, <code>-1 hour</code>)"],
+  ["journalctl -b [N]", "Limite aux entrées d'un démarrage donné (0=actuel, -1=précédent)"],
+  ["journalctl --list-boots", "Liste les démarrages système connus du journal"],
+  ["journalctl CHAMP=valeur", "Filtre par champ structuré (<code>_PID</code>, <code>_UID</code>, <code>_SYSTEMD_UNIT</code>)"],
+  ["journalctl --flush", "Vide le journal en cours vers le stockage persistant (après création de <code>/var/log/journal</code>)"],
+  ["logger -p fonction.priorite \"msg\"", "Envoie manuellement un message de test au service rsyslog/journal"],
+  ["fonction.priorite /chemin/fichier", "Règle rsyslog.conf : redirige les messages correspondants vers un fichier"],
+  ["timedatectl set-timezone ZONE", "Modifie le fuseau horaire du système (nomenclature IANA, ex. <code>America/Phoenix</code>)"],
+  ["timedatectl set-ntp true|false", "Active ou désactive la synchronisation NTP automatique via chronyd"],
+  ["chronyc sources -v", "Affiche l'état des sources NTP configurées et la source actuellement sélectionnée (*)"]
+ ],
+ pieges:["Sans créer <code>/var/log/journal</code> ni exécuter <code>journalctl --flush</code>, le journal reste volatil dans <code>/run/log/journal</code> et disparaît au redémarrage.","<code>timedatectl set-time</code> échoue avec <em>Automatic time synchronization is enabled</em> si NTP est actif : il faut d'abord <code>timedatectl set-ntp false</code>.","Dans <code>/etc/rsyslog.conf</code>, spécifier une priorité seule (ex. <code>authpriv.warning</code>) capture ce niveau <strong>et tous les niveaux supérieurs</strong>, pas uniquement <code>warning</code>.","Depuis RHEL 10, <code>/etc/systemd/journald.conf</code> n'existe pas par défaut : il faut copier <code>/usr/lib/systemd/journald.conf</code> avant de le modifier, sous peine que les changements n'aient aucun effet.","Une valeur inférieure à 377 (octal) dans la colonne <code>Reach</code> de <code>chronyc sources</code> indique des sondages NTP récents en échec, utile pour diagnostiquer une source à l'état <code>?</code>."]
+},
+{
+ id:"selinux", cat:"journalisation", chap:"Chap. 6", titre:"Gestion de la sécurité avec SELinux",
+ brief:"<code>SELinux</code> ajoute un contrôle d'accès obligatoire (MAC) par-dessus les permissions classiques (DAC) : chaque processus et chaque ressource porte une <strong>étiquette de contexte</strong> (user:role:type:level), et seules les actions explicitement autorisées par la politique <code>targeted</code> sont permises. Les trois modes sont <code>enforcing</code>, <code>permissive</code> et <code>disabled</code> (déconseillé, et non paramétrable directement depuis RHEL 10). Les commandes <code>semanage fcontext</code> + <code>restorecon</code> corrigent les contextes de fichier de façon durable, tandis que les <strong>booléens</strong> (<code>getsebool</code>/<code>setsebool</code>) activent des comportements optionnels d'une politique. En cas de refus, <code>ausearch</code>, <code>sealert</code> et les journaux <code>audit.log</code>/<code>messages</code> permettent de diagnostiquer précisément la cause.",
+ exemple:`$ getenforce
+Enforcing
+$ ls -ldZ /custom /var/www/html
+unconfined_u:object_r:default_t:s0 /custom
+system_u:object_r:httpd_sys_content_t:s0 /var/www/html
+$ semanage fcontext -a -t httpd_sys_content_t '/custom(/.*)?'
+$ restorecon -Rv /custom
+Relabeled /custom from unconfined_u:object_r:default_t:s0 to system_u:object_r:httpd_sys_content_t:s0
+# si le problème persiste, consulter les refus AVC
+$ sealert -a /var/log/audit/audit.log`,
+ cmds:[
+  ["getenforce","Affiche le mode SELinux actuel (Enforcing/Permissive/Disabled)"],
+  ["setenforce Enforcing|Permissive|1|0","Bascule <strong>temporairement</strong> entre enforcing et permissive (perdu au redémarrage)"],
+  ["/etc/selinux/config (SELINUX=)","Définit le mode SELinux persistant appliqué au démarrage"],
+  ["ls -Z / ps -Z / ps axZ","Affiche le contexte SELinux des fichiers ou des processus"],
+  ["semanage fcontext -a -t type 'chemin(/.*)?'","Ajoute une règle de contexte de fichier par défaut pour un chemin"],
+  ["semanage fcontext -l [-C]","Liste les règles de contexte (<code>-C</code> : personnalisations locales uniquement)"],
+  ["restorecon -Rv chemin","Réapplique le contexte défini par la politique (récursif et verbeux)"],
+  ["chcon -t type chemin","Modifie <strong>temporairement</strong> le contexte, sans passer par la politique"],
+  ["getsebool -a / getsebool nom","Liste ou affiche l'état actuel d'un ou plusieurs booléens SELinux"],
+  ["setsebool [-P] nom on|off","Active/désactive un booléen (<code>-P</code> = rend le changement persistant)"],
+  ["semanage boolean -l [-C]","Liste les booléens avec valeurs par défaut et actuelles"],
+  ["ausearch -m AVC -ts recent|today","Recherche les événements de refus AVC dans <code>audit.log</code>"],
+  ["sealert -l UUID / sealert -a fichier","Détaille un événement AVC et propose des suggestions de correction"]
+ ],
+ pieges:["Depuis RHEL 10, <code>SELINUX=disabled</code> n'est plus pris en charge dans <code>/etc/selinux/config</code>.","<code>cp</code> fait hériter le fichier copié du contexte du répertoire de destination, alors que <code>mv</code> (même système de fichiers) conserve le contexte d'origine : toujours vérifier après une copie ou un déplacement.","<code>chcon</code> modifie le contexte sans toucher à la politique : un <code>restorecon</code> ultérieur écrasera ce changement.","Un <code>semanage fcontext -a</code> ne change rien tant que <code>restorecon</code> n'a pas été exécuté sur les fichiers concernés.","Après un passage de <em>permissive</em> à <em>enforcing</em>, Red Hat recommande de redémarrer pour confiner correctement les services démarrés en mode permissif."]
+},
+{
+ id:"archivage", cat:"fichiers-transferts", chap:"Chap. 7", titre:"Archivage de fichiers",
+ brief:"La commande <code>tar</code> crée, liste et extrait des archives à partir des actions <code>-c</code>/<code>-t</code>/<code>-x</code>, combinées aux options <code>-v</code>, <code>-f</code> et <code>-p</code>. La compression s'ajoute avec <code>-z</code> (gzip), <code>-j</code> (bzip2) ou <code>-J</code> (xz), chacun offrant un compromis différent entre vitesse et taux de compression. Les attributs étendus comme les <strong>ACL</strong> et les <strong>contextes SELinux</strong> ne sont jamais conservés par défaut : il faut explicitement <code>--acls</code>, <code>--selinux</code> ou <code>--xattrs</code>.",
+ exemple:`$ tar -czf /root/etcbackup.tar.gz /etc
+tar: Removing leading \`/' from member names
+$ tar -tzf /root/etcbackup.tar.gz | head -3
+etc/
+etc/fstab
+etc/hosts
+$ mkdir /restore && cd /restore
+$ tar -xzf /root/etcbackup.tar.gz
+$ ls -lh /root/etcbackup.tar.gz`,
+ cmds:[
+  ["tar -c -f archive.tar fichiers...","Crée une archive à partir de fichiers ou répertoires"],
+  ["tar -t -f archive.tar","Liste le contenu d'une archive sans l'extraire"],
+  ["tar -x -f archive.tar","Extrait une archive dans le répertoire courant"],
+  ["tar -v","Mode verbeux : affiche les fichiers traités pendant l'opération"],
+  ["tar -p / --preserve-permissions","Conserve les permissions d'origine à l'extraction (par défaut pour root)"],
+  ["tar -z / -j / -J","Compresse avec gzip (<code>.tar.gz</code>), bzip2 (<code>.tar.bz2</code>) ou xz (<code>.tar.xz</code>)"],
+  ["tar -a / --auto-compress","Détecte automatiquement l'algorithme via le suffixe du fichier"],
+  ["tar --acls / --selinux / --xattrs","Inclut les ACL POSIX, les contextes SELinux ou d'autres attributs étendus"],
+  ["gzip -l / xz -l fichier","Affiche la taille non compressée avant de décompresser"],
+  ["gunzip / bunzip2 / unxz","Décompresse un <strong>fichier compressé seul</strong>, sans notion d'archive multi-fichiers"]
+ ],
+ pieges:["Les ACL et contextes SELinux ne sont <strong>pas</strong> conservés par défaut : ajouter <code>--acls</code>, <code>--selinux</code> ou <code>--xattrs</code> si besoin.","Utiliser la mauvaise option de compression (ex. <code>-z</code> sur un fichier <code>.xz</code>) fait échouer l'extraction avec une erreur du type <em>not in gzip format</em>.","<code>tar</code> supprime la barre oblique de tête des chemins absolus à la création : extraire toujours dans un répertoire dédié pour éviter d'écraser des fichiers existants.","Sans <code>-p</code>, l'extraction applique l'<code>umask</code> courant aux fichiers extraits au lieu de leurs permissions archivées.","<code>gzip</code>, <code>bzip2</code> et <code>xz</code> seuls ne créent pas d'archive multi-fichiers : il faut passer par <code>tar</code> pour regrouper plusieurs fichiers avant compression."]
+},
+{
+ id:"transfert", cat:"fichiers-transferts", chap:"Chap. 8", titre:"Transfert de fichiers",
+ brief:"<code>sftp</code> ouvre une session interactive sécurisée (<code>put</code>/<code>get</code>, <code>-r</code> pour la récursivité, <code>lcd</code>/<code>lpwd</code> pour le côté local) tandis que <code>scp</code> copie en une seule commande non interactive ; depuis RHEL 10, <code>scp</code> s'appuie en interne sur le protocole SFTP, l'ancien protocole SCP restant accessible via <code>-O</code> mais pouvant être désactivé (<code>/etc/ssh/disable_scp</code>). La commande <code>rsync</code> synchronise en ne transférant que les différences, avec le <strong>mode Archive</strong> (<code>-a</code>) qui préserve récursivité, permissions, horodatages et propriété — sans les liens matériels (<code>-H</code>) ni les ACL/SELinux (<code>-A</code>/<code>-X</code>).",
+ exemple:`$ sftp student@serverb
+sftp> lcd /home/student/backup
+sftp> put -r /etc/ssh
+sftp> exit
+$ scp -r root@serverb:/etc/ssh /home/student/backup2
+$ rsync -av /var/log/ student@serverb:/home/student/logs
+sending incremental file list
+sent 11,592 bytes received 778 bytes`,
+ cmds:[
+  ["sftp user@host","Ouvre une session interactive de transfert sécurisé"],
+  ["put [-r] fichier / get [-r] fichier","Charge/télécharge un fichier ou, avec <code>-r</code>, un répertoire entier"],
+  ["lcd chemin / lpwd","Change ou affiche le répertoire courant <strong>local</strong> dans une session sftp"],
+  ["sftp user@host:chemin","Récupère un fichier distant en une seule commande (téléchargement uniquement, pas d'envoi)"],
+  ["scp [-r] source destination","Copie un ou plusieurs fichiers/répertoires via SSH (utilise SFTP en interne depuis RHEL 10)"],
+  ["scp -O","Force l'ancien protocole SCP historique, déconseillé (vulnérabilité d'injection)"],
+  ["rsync -av source destination","Synchronise en <strong>mode Archive</strong> avec sortie détaillée (récursif, permissions, horodatages, propriétaire/groupe, liens symboliques)"],
+  ["rsync -n / --dry-run","Simule la synchronisation sans copier ni supprimer quoi que ce soit"],
+  ["rsync -H","Conserve les liens matériels, non inclus par défaut dans le mode Archive"],
+  ["rsync -A / -X","Conserve respectivement les ACL et les contextes de fichier SELinux"],
+  ["rsync user@host:chemin destination","Utilise le même format <code>user@host:path</code> que scp/sftp pour désigner un emplacement distant"]
+ ],
+ pieges:["Une barre oblique de fin sur le répertoire <strong>source</strong> de <code>rsync</code> change tout : avec elle, seul le contenu est synchronisé ; sans elle, le répertoire source lui-même est recréé dans la destination.","Le mode Archive (<code>-a</code>) ne conserve pas les liens matériels : ajouter <code>-H</code> si nécessaire.","Depuis RHEL 10, <code>scp</code> peut être désactivé via <code>/etc/ssh/disable_scp</code> (l'option <code>-O</code> échoue alors aussi), mais <code>sftp</code> reste toujours fonctionnel.","La syntaxe <code>sftp user@host:fichier</code> en une seule ligne ne permet que le <em>get</em>, jamais le <em>put</em>.","Toujours lancer un essai à blanc (<code>rsync -n</code>) avant une synchronisation qui pourrait écraser ou supprimer des fichiers importants."]
+},
+{
+ id:"tuned", cat:"stockage-perf", chap:"Chap. 9", titre:"Optimisation des performances du système",
+ brief:"Le démon <code>tuned</code> applique des profils d'optimisation prédéfinis (stockés dans <code>/usr/lib/tuned/profiles</code>, personnalisables via <code>/etc/tuned/profiles</code> qui est prioritaire) et fonctionne en mode statique par défaut, le mode dynamique se réglant dans <code>/etc/tuned/tuned-main.conf</code>. La commande <code>tuned-adm</code> liste, bascule et vérifie les profils de façon persistante. Sur les processus, la <strong>valeur nice</strong> (-20 à +19) influence la priorité calculée par l'ordonnanceur <code>EEVDF</code> (PR = 20 + nice pour <code>SCHED_NORMAL</code>) ; <code>nice</code> démarre un processus avec une valeur donnée et <code>renice</code> modifie celle d'un processus déjà lancé.",
+ exemple:`$ tuned-adm active
+Current active profile: virtual-guest
+$ tuned-adm list
+$ sudo tuned-adm profile throughput-performance
+$ tuned-adm verify
+Verification succeeded, current system settings match the preset profile.
+$ ps -o pid,pri,nice,comm -C myapp
+$ sudo renice -n 10 4201
+4201 (process ID) old priority 0, new priority 10`,
+ cmds:[
+  ["tuned-adm active","Affiche le profil d'optimisation actif"],
+  ["tuned-adm list","Liste tous les profils disponibles (système et personnalisés)"],
+  ["tuned-adm profile nom","Bascule de manière <strong>persistante</strong> vers un autre profil"],
+  ["tuned-adm profile_info [nom]","Affiche le détail d'un profil, ou du profil actif si omis"],
+  ["tuned-adm recommend","Suggère un profil adapté aux caractéristiques du système"],
+  ["tuned-adm verify","Vérifie que les réglages actuels correspondent bien au profil actif"],
+  ["tuned-adm off","Désactive toutes les optimisations appliquées par TuneD"],
+  ["/etc/tuned/tuned-main.conf (dynamic_tuning, update_interval)","Active et règle la fréquence de l'optimisation dynamique (désactivée par défaut)"],
+  ["nice -n valeur commande","Démarre un processus avec une valeur nice donnée (-20 à +19)"],
+  ["renice -n valeur PID","Modifie la valeur nice d'un processus déjà en cours d'exécution"],
+  ["ps -o pid,pri,nice,cls,pcpu,comm","Affiche priorité (<code>PRI</code>), valeur nice (<code>NI</code>) et classe d'ordonnancement (<code>CLS</code> : TS/FF/RR)"],
+  ["top (colonnes PR, NI)","Affiche dynamiquement la priorité calculée et la valeur nice de chaque processus"]
+ ],
+ pieges:["Ne jamais modifier les profils dans <code>/usr/lib/tuned/profiles</code> : copier le répertoire du profil dans <code>/etc/tuned/profiles</code>, qui est prioritaire, pour le personnaliser.","Un utilisateur non privilégié ne peut qu'<strong>augmenter</strong> sa propre valeur nice (baisser sa priorité), jamais la diminuer ni toucher aux processus d'un autre utilisateur.","La valeur nice n'agit que sur la politique <code>SCHED_NORMAL</code> (EEVDF) : elle ne fait jamais passer un processus devant une tâche temps réel <code>SCHED_FIFO</code>/<code>SCHED_RR</code>.","L'optimisation dynamique est désactivée par défaut sur RHEL pour garantir des performances prévisibles : seule l'optimisation statique du profil actif s'applique tant qu'elle n'est pas activée.","Un utilisateur sans privilège qui a relevé la valeur nice d'un de ses processus ne peut plus la rabaisser ensuite : il doit relancer le processus pour retrouver la priorité par défaut."]
+},
+{
+ id:"stockage-base", cat:"stockage-perf", chap:"Chap. 10", titre:"Gestion du stockage de base",
+ brief:"Le partitionnement utilise le schéma <code>MBR</code> (4 partitions principales max, disques jusqu'à 2 Tio, BIOS) ou <code>GPT</code> (128 partitions, tailles bien supérieures, UEFI), géré via l'éditeur <code>parted</code>. Après création d'une partition (<code>mkpart</code>) et <code>udevadm settle</code>, on la formate avec <code>mkfs.xfs</code> (ou <code>mkfs.ext4</code>) puis on la monte avec <code>mount</code> ; pour un montage persistant, une ligne est ajoutée à <code>/etc/fstab</code> en utilisant de préférence l'<strong>UUID</strong>. L'espace d'échange suit un cycle similaire : partition <code>linux-swap</code>, <code>mkswap</code>, puis <code>swapon</code> (activation immédiate) ou entrée <code>/etc/fstab</code> (persistance), avec une priorité réglable via l'option <code>pri=</code>.",
+ exemple:`$ parted /dev/sdb mklabel gpt
+$ parted /dev/sdb mkpart primary xfs 2048s 1001MB
+$ udevadm settle
+$ mkfs.xfs /dev/sdb1
+$ lsblk --fs /dev/sdb1
+sdb1 xfs 291bb68e-91b9-4522-8566-7cc1d848babd
+$ echo 'UUID=291bb68e-91b9-4522-8566-7cc1d848babd /archive xfs defaults 0 0' >> /etc/fstab
+$ systemctl daemon-reload
+$ mount /archive`,
+ cmds:[
+  ["parted disque print","Affiche la table de partitions (option <code>unit</code> : s, MiB, GiB, MB, GB...)"],
+  ["parted disque mklabel msdos|gpt","Écrit une nouvelle étiquette de disque (<strong>efface</strong> la table existante)"],
+  ["parted disque mkpart primary|nom fstype début fin","Crée une partition, en mode interactif ou en une seule commande"],
+  ["parted disque rm num","Supprime immédiatement une partition de la table"],
+  ["udevadm settle","Attend que le noyau détecte la partition et crée le fichier <code>/dev</code> correspondant"],
+  ["mkfs.xfs / mkfs.ext4 périphérique","Formate une partition avec le système de fichiers choisi"],
+  ["mount périphérique point_de_montage","Monte manuellement un système de fichiers (non persistant)"],
+  ["/etc/fstab (UUID, point, type, options, dump, fsck)","Définit les montages persistants appliqués au démarrage"],
+  ["lsblk --fs","Affiche le type de système de fichiers et l'UUID des périphériques en mode bloc"],
+  ["systemctl daemon-reload","Recharge systemd après toute modification de <code>/etc/fstab</code>"],
+  ["mkswap périphérique","Applique une signature d'espace d'échange sur une partition <code>linux-swap</code>"],
+  ["swapon [-a] périphérique / swapoff périphérique","Active (ou toutes via <code>-a</code>)/désactive un espace d'échange"],
+  ["swapon --show / free","Affiche les espaces d'échange actifs, leur taille et leur priorité"]
+ ],
+ pieges:["<code>parted mklabel</code> efface entièrement la table de partitions existante : toutes les données deviennent inaccessibles si les limites de partition changent.","Une entrée erronée dans <code>/etc/fstab</code> peut empêcher le démarrage de la machine : toujours tester (<code>findmnt --verify</code>) et remonter manuellement avant de redémarrer.","Red Hat recommande d'utiliser l'<strong>UUID</strong> plutôt que le nom de périphérique dans <code>/etc/fstab</code>, car l'ordre de détection des disques peut changer.","Pour XFS, le champ fsck de <code>/etc/fstab</code> doit rester à <code>0</code> (XFS ne se vérifie pas avec fsck) ; pour ext4, utiliser <code>1</code> pour la racine et <code>2</code> pour les autres.","La priorité par défaut d'un espace d'échange est <code>-2</code> et les plus récents ont une priorité plus basse : utiliser l'option <code>pri=</code> pour privilégier un swap plus rapide."]
+},
+{
+ id:"lvm", cat:"stockage-perf", chap:"Chap. 11", titre:"Gestion du stockage avec LVM",
+ brief:"LVM empile trois couches : les <strong>volumes physiques</strong> (PV, via <code>pvcreate</code>), regroupés en <strong>groupes de volumes</strong> (VG, via <code>vgcreate</code>/<code>vgextend</code>), dans lesquels sont taillés des <strong>volumes logiques</strong> (LV, via <code>lvcreate</code>) formatés puis montés comme un périphérique classique. Son intérêt majeur est de pouvoir agrandir un LV à chaud avec <code>lvextend</code> puis étendre son système de fichiers (<code>xfs_growfs</code>, uniquement vers le haut, ou <code>resize2fs</code> pour ext4). Pour remplacer un disque physique, on ajoute le nouveau PV au VG (<code>vgextend</code>), on migre les données avec <code>pvmove</code>, puis on retire l'ancien PV (<code>vgreduce</code>) avant de le supprimer (<code>pvremove</code>).",
+ exemple:`$ parted /dev/sdb mklabel gpt mkpart primary 1MiB 1025MiB
+$ parted /dev/sdb set 1 lvm on
+$ pvcreate /dev/sdb1
+$ vgcreate vg_data /dev/sdb1
+$ lvcreate -n lv_data -L 500M vg_data
+$ mkfs -t xfs /dev/vg_data/lv_data
+$ mount /dev/vg_data/lv_data /data
+$ lvextend -rL +200M /dev/vg_data/lv_data`,
+ cmds:[
+  ["pvcreate périphérique...","Étiquette une ou plusieurs partitions/disques comme volumes physiques LVM"],
+  ["vgcreate nom_vg pv...","Crée un groupe de volumes à partir d'un ou plusieurs PV"],
+  ["lvcreate -n nom -L taille|-l nb_PE nom_vg","Crée un volume logique (taille en octets/Mio, ou en nombre d'étendues physiques)"],
+  ["pvdisplay / vgdisplay / lvdisplay [cible]","Affiche les informations détaillées d'un PV, VG ou LV"],
+  ["pvs / vgs / lvs","Affiche un résumé condensé, une ligne par entité"],
+  ["vgextend nom_vg pv","Ajoute un volume physique à un groupe de volumes existant"],
+  ["lvextend -L [+]taille [-r] cible","Augmente la taille d'un LV (<code>-r</code> redimensionne aussi le système de fichiers)"],
+  ["xfs_growfs point_de_montage","Étend un système de fichiers XFS monté à la taille du LV (uniquement vers le haut)"],
+  ["resize2fs périphérique","Étend ou réduit un système de fichiers ext2/3/4, en ligne ou hors ligne"],
+  ["pvmove [-A y] pv_source","Déplace les données d'un PV vers un autre PV du même VG disposant d'assez d'espace libre"],
+  ["vgreduce nom_vg pv","Retire un PV vidé d'un groupe de volumes"],
+  ["lvremove / vgremove / pvremove","Supprime respectivement un LV, un VG ou un PV (opérations irréversibles)"]
+ ],
+ pieges:["Pour étendre un espace d'échange sur un LV, il faut d'abord <code>swapoff</code>, puis <code>lvextend</code>, puis refaire <code>mkswap</code> et <code>swapon</code> : les données de swap ne survivent pas à cette opération.","Un système de fichiers XFS ne peut être agrandi que vers le haut, jamais réduit, contrairement à ext4 avec <code>resize2fs</code>.","Toujours exécuter <code>xfs_growfs</code> après <code>lvextend</code> (ou utiliser l'option <code>-r</code> de <code>lvextend</code> qui combine les deux étapes en une seule).","Avant tout <code>pvmove</code>, sauvegarder les données : une coupure de courant pendant l'opération peut laisser le VG dans un état incohérent et entraîner une perte de données.","Pour retirer proprement toute la structure LVM, respecter l'ordre <code>umount</code> > <code>lvremove</code> > <code>vgremove</code> > <code>pvremove</code> : ces suppressions sont définitives."]
+},
+{
+ id:"boot", cat:"demarrage", chap:"Chap. 12", titre:"Résolution des problèmes de démarrage",
+ brief:"Le chargeur <code>GRUB2</code> charge le noyau et l'image <code>initramfs</code>, puis passe la main à l'unité <code>systemd</code> qui atteint une <strong>cible</strong> (<code>graphical.target</code>, <code>multi-user.target</code>, <code>rescue.target</code>, <code>emergency.target</code>). La commande <code>grubby</code> gère les entrées de démarrage et les arguments noyau, tandis que <code>systemctl get-default</code>/<code>set-default</code>/<code>isolate</code> pilotent la cible systemd. Un problème dans <code>/etc/fstab</code> ou un système de fichiers corrompu bascule le démarrage vers un shell <code>emergency</code> nécessitant le mot de passe root pour réparer, remonter en lecture/écriture puis relancer <code>systemctl daemon-reload</code> et <code>mount -a</code>.",
+ exemple:`$ grubby --default-index
+1
+$ grubby --info 1
+$ grubby --set-default-index 0
+# ajoute rhgb quiet au noyau par défaut pour masquer les messages de boot
+$ grubby --update-kernel /boot/vmlinuz-6.12.0-55.9.1.el10_0.x86_64 --args="rhgb quiet"
+$ systemctl reboot`,
+ cmds:[
+  ["grubby --info INDEX","Affiche les détails d'une entrée de démarrage (kernel, args, root, initrd)"],
+  ["grubby --default-index","Affiche l'index du noyau par défaut"],
+  ["grubby --set-default-index N","Définit l'entrée N comme noyau par défaut"],
+  ["grubby --update-kernel PATH --args=\"...\"","Ajoute des arguments à la ligne de commande noyau"],
+  ["grubby --update-kernel PATH --remove-args=\"...\"","Retire des arguments de la ligne de commande noyau"],
+  ["systemctl get-default / set-default CIBLE","Consulte ou change la cible systemd par défaut"],
+  ["systemctl isolate CIBLE","Bascule immédiatement vers une autre cible (si <code>AllowIsolate=yes</code>)"],
+  ["systemctl list-dependencies graphical.target","Liste l'arborescence des unités requises par une cible"],
+  ["systemd.unit=rescue.target / emergency.target","Argument noyau pour démarrer une seule fois sur une cible de secours"],
+  ["xfs_repair PERIPHERIQUE","Vérifie et répare un système de fichiers XFS (à froid, démonté)"],
+  ["fsck.ext4 -p PERIPHERIQUE","Répare automatiquement un système de fichiers ext4/ext3/ext2"],
+  ["mount -o remount,rw /","Remonte la racine en lecture/écriture depuis un shell de secours"],
+  ["mount -a","Monte toutes les entrées de <code>/etc/fstab</code> non encore montées"],
+  ["systemctl daemon-reload","Recharge la configuration systemd après modification de <code>/etc/fstab</code>"]
+ ],
+ pieges:["La cible <code>emergency</code> monte la racine en lecture seule : sans <code>mount -o remount,rw /</code>, impossible de corriger <code>/etc/fstab</code>.","<code>rescue.target</code> attend la fin de <code>sysinit.target</code> (journalisation, montages) contrairement à <code>emergency.target</code> qui démarre un environnement minimal.","Une cible ne s'isole que si son fichier d'unité contient <code>AllowIsolate=yes</code> (ex: <code>graphical.target</code>, pas <code>cryptsetup.target</code>).","Toujours démonter un système de fichiers avant <code>xfs_repair</code> ou <code>e2fsck</code> pour éviter la corruption des données.","L'option <code>nofail</code> dans <code>/etc/fstab</code> évite un blocage au démarrage mais ne doit jamais être utilisée sur des montages de production critiques."]
+},
+{
+ id:"recup-root", cat:"demarrage", chap:"Chap. 13", titre:"Récupération de l'accès super utilisateur",
+ brief:"Deux méthodes permettent de réinitialiser le mot de passe root : démarrer sur un <strong>support de secours</strong> (image <code>boot.iso</code>, option recommandée) et faire un <code>chroot /mnt/sysroot</code>, ou passer <code>init=/bin/bash</code> au noyau depuis GRUB2 sans support externe. Dans les deux cas, il faut remonter la racine en lecture/écriture avant <code>passwd</code>, puis créer <code>/.autorelabel</code> pour forcer un réétiquetage SELinux complet au redémarrage, car <code>passwd</code> recrée <code>/etc/shadow</code> sans contexte SELinux.",
+ exemple:`# Méthode sans support de secours : interrompre GRUB2 (Esc), éditer l'entrée (E)
+# supprimer les options console=, ajouter en fin de ligne : init=/bin/bash
+# puis Ctrl+X pour démarrer
+bash-5.2# mount -o remount,rw /
+bash-5.2# passwd
+bash-5.2# touch /.autorelabel
+bash-5.2# exec /sbin/init`,
+ cmds:[
+  ["Esc au menu GRUB2","Interrompt le compte à rebours de démarrage"],
+  ["E sur l'entrée sélectionnée","Ouvre l'éditeur GRUB2 pour modifier la ligne noyau (une seule fois)"],
+  ["init=/bin/bash","Argument noyau qui démarre directement un shell bash au lieu de systemd"],
+  ["mount -o remount,rw /","Remonte la racine en lecture/écriture pour pouvoir changer le mot de passe"],
+  ["passwd root / passwd","Définit le nouveau mot de passe root (chrooté ou en shell direct)"],
+  ["chroot /mnt/sysroot","Change de racine vers le système installé depuis l'environnement de secours"],
+  ["touch /.autorelabel","Force un réétiquetage SELinux complet au prochain démarrage"],
+  ["exec /sbin/init","Termine le shell de secours (méthode init=/bin/bash) et reprend le démarrage normal"],
+  ["exit (x2 en mode chroot)","Quitte le chroot puis le shell de secours pour redémarrer (méthode support de secours)"]
+ ],
+ pieges:["Oublier <code>touch /.autorelabel</code> laisse <code>/etc/shadow</code> sans contexte SELinux, ce qui peut bloquer l'authentification après redémarrage.","Il faut retirer toute option <code>console=</code> de la ligne noyau avant d'ajouter <code>init=/bin/bash</code>, sinon l'invite peut s'ouvrir sur la mauvaise console.","La méthode <code>init=/bin/bash</code> est risquée et à manier avec précaution : elle contourne tout le processus d'initialisation normal.","Avec le support de secours, il faut impérativement utiliser une image de la <strong>même version</strong> RHEL que le système à réparer.","Les modifications faites directement dans l'éditeur GRUB2 (touche E) sont temporaires et ne s'appliquent qu'au démarrage en cours."]
+},
+{
+ id:"securite-reseau", cat:"journalisation", chap:"Chap. 14", titre:"Gestion de la sécurité réseau",
+ brief:"<code>firewalld</code> est le gestionnaire de pare-feu dynamique par défaut de RHEL 10, frontal du framework <code>nftables</code>, qui classe le trafic en <strong>zones</strong> (public par défaut, trusted, internal, dmz, block, drop...) avec des services et ports prédéfinis. La commande <code>firewall-cmd</code> gère la configuration runtime et permanente (<code>--permanent</code> puis <code>--reload</code>). En complément, SELinux étiquette les ports réseau (<code>ssh_port_t</code>, <code>http_port_t</code>...) via <code>semanage port</code> : un service qui écoute sur un port non standard doit d'abord obtenir l'étiquette adéquate, sinon SELinux bloque le <code>bind</code>.",
+ exemple:`$ firewall-cmd --get-default-zone
+public
+$ firewall-cmd --permanent --add-service=https
+$ firewall-cmd --permanent --add-port=82/tcp
+$ firewall-cmd --reload
+$ semanage port -a -t http_port_t -p tcp 82
+$ systemctl restart httpd`,
+ cmds:[
+  ["firewall-cmd --get-default-zone","Affiche la zone de pare-feu par défaut"],
+  ["firewall-cmd --set-default-zone=ZONE","Change la zone par défaut (runtime + permanent)"],
+  ["firewall-cmd --list-all [--zone=ZONE]","Liste services, ports, sources d'une zone"],
+  ["firewall-cmd --permanent --add-service=SERVICE","Autorise un service prédéfini de manière persistante"],
+  ["firewall-cmd --permanent --add-port=PORT/PROTO","Ouvre un port/protocole spécifique de manière persistante"],
+  ["firewall-cmd --permanent --add-source=CIDR --zone=ZONE","Affecte un réseau source à une zone"],
+  ["firewall-cmd --reload","Applique la configuration permanente comme nouvelle configuration runtime"],
+  ["semanage port -l","Liste toutes les étiquettes de port SELinux"],
+  ["semanage port -l | grep SERVICE","Filtre les étiquettes de port par service"],
+  ["semanage port -a -t TYPE -p tcp|udp PORT","Ajoute un nouveau port à une étiquette SELinux existante"],
+  ["semanage port -m -t TYPE -p tcp|udp PORT","Modifie l'étiquette d'un port déjà déclaré"],
+  ["semanage port -d -t TYPE -p tcp|udp PORT","Supprime une liaison port/étiquette"],
+  ["sealert -a /var/log/audit/audit.log","Analyse les refus SELinux et suggère la commande de correction"]
+ ],
+ pieges:["Sans <code>--permanent</code>, une règle <code>firewall-cmd</code> ne survit pas à un redémarrage ; avec <code>--permanent</code>, elle n'est active qu'après <code>--reload</code>.","Ouvrir le port dans <code>firewalld</code> ne suffit pas si SELinux bloque le <code>bind</code> du processus : il faut aussi étiqueter le port avec <code>semanage port</code>.","On ne peut pas modifier l'étiquette <em>par défaut</em> d'un service avec <code>semanage</code> (ex: retirer 80/tcp de <code>http_port_t</code>) : cela nécessite de modifier le module de politique du service.","La zone <code>trusted</code> autorise tout le trafic entrant par défaut : à réserver à des interfaces réellement fiables.","Utiliser <code>semanage port -l -C</code> pour voir uniquement les modifications apportées à la politique par défaut, utile pour vérifier ou nettoyer."]
+},
+{
+ id:"stockage-reseau", cat:"stockage-perf", chap:"Chap. 15", titre:"Accès au stockage en réseau",
+ brief:"RHEL 10 utilise <code>NFS 4.2</code> par défaut (NFSv3 et NFSv4 supportés) pour monter des répertoires exportés, manuellement (<code>mount</code>), de façon persistante (<code>/etc/fstab</code>) ou à la demande via le service <code>autofs</code>. NFSv3 s'interroge avec <code>showmount --exports</code> (RPC/port 111), NFSv4 se navigue en montant la racine d'exportation. Le service <code>autofs</code> monte les partages uniquement à l'accès et les démonte après un délai d'inactivité, via des <strong>cartes directes</strong> (chemin absolu fixe, fichier <code>/etc/auto.master</code> avec <code>/-</code>) ou <strong>indirectes</strong> (point de montage créé/supprimé dynamiquement sous un répertoire de base).",
+ exemple:`$ dnf install nfs-utils autofs
+$ mount -t nfs serverb:/shares/public /public
+$ umount /public
+# montage automatique indirect
+$ cat /etc/auto.master.d/shares.autofs
+/remote /etc/auto.shares
+$ cat /etc/auto.shares
+* -rw,sync serverb:/shares/&
+$ systemctl enable --now autofs`,
+ cmds:[
+  ["dnf install nfs-utils","Installe les outils client/serveur NFS nécessaires au montage"],
+  ["showmount --exports SERVEUR","Liste les exports disponibles sur un serveur NFSv3 (RPC)"],
+  ["mount -t nfs SERVEUR:/export POINT","Monte manuellement une exportation NFS (temporaire)"],
+  ["mount SERVEUR:/export POINT nfs rw 0 0 (dans /etc/fstab)","Monte une exportation NFS de façon persistante au démarrage"],
+  ["umount POINT","Démonte un système de fichiers NFS"],
+  ["lsof POINT","Identifie les processus qui empêchent le démontage d'un point"],
+  ["dnf install autofs","Installe le service de montage automatique"],
+  ["/etc/auto.master.d/*.autofs","Fichier de schéma maître : associe un point de montage à un fichier de mise en correspondance"],
+  ["/- /etc/auto.direct","Déclare une carte directe (chemins absolus) dans le schéma maître"],
+  ["* -rw,sync serveur:/chemin/&","Entrée de carte indirecte avec caractère générique (& = clé demandée)"],
+  ["systemctl enable --now autofs","Active et démarre le service de montage automatique"],
+  ["x-systemd.automount (option fstab)","Alternative à autofs : montage à la demande géré nativement par systemd"]
+ ],
+ pieges:["Le montage via <code>/etc/fstab</code> peut ralentir ou bloquer le démarrage si le réseau ou le serveur NFS est indisponible, contrairement à <code>autofs</code> qui monte à la demande.","<code>autofs</code> n'est pas monté au démarrage : le système de fichiers n'apparaît qu'au premier accès au point de montage.","Un montage indirect ne prend en charge qu'un point de montage relatif (nom simple), un montage direct exige un chemin absolu complet.","Si le serveur exporte en lecture seule, le client obtient un accès lecture seule même en demandant <code>rw</code> dans les options de montage.","Après modification de <code>/etc/fstab</code> ou des fichiers de carte <code>autofs</code>, il faut recharger la configuration (<code>systemctl daemon-reload</code> ou redémarrer <code>autofs</code>) pour que les changements prennent effet."]
+},
+{
+ id:"install-rhel", cat:"deploiement", chap:"Chap. 16", titre:"Installation de Red Hat Enterprise Linux",
+ brief:"L'installation interactive utilise le programme graphique <strong>Anaconda</strong> à partir d'un DVD binaire ou d'une image de démarrage réseau, avec l'écran <code>INSTALLATION SUMMARY</code> centralisant stockage, réseau, logiciels et comptes ; dans RHEL 10, le compte root est désactivé par défaut et un utilisateur non-root avec sudo (groupe <code>wheel</code>) est requis. <strong>Kickstart</strong> automatise entièrement l'installation via un fichier texte (commandes + sections <code>%packages</code>/<code>%pre</code>/<code>%post</code> terminées par <code>%end</code>), publié sur un serveur puis référencé au démarrage avec l'argument noyau <code>inst.ks=</code>. Les utilitaires <code>ksvalidator</code> et <code>ksverdiff</code> (paquet <code>pykickstart</code>) valident la syntaxe et comparent les versions.",
+ exemple:`# fichier kickstart.cfg (extrait)
+text
+url --url="http://content.example.com/rhel10.0/x86_64/dvd/"
+zerombr
+clearpart --all --initlabel
+autopart
+rootpw --lock
+user --groups=wheel --name=student --password=student --plaintext
+%packages
+@^minimal-environment
+vim-enhanced
+%end
+$ ksvalidator kickstart.cfg
+$ sudo cp kickstart.cfg /var/www/html/
+# au boot : inst.ks=http://servera.lab.example.com/kickstart.cfg`,
+ cmds:[
+  ["dnf install pykickstart","Installe <code>ksvalidator</code> et <code>ksverdiff</code>"],
+  ["ksvalidator FICHIER.cfg","Vérifie la syntaxe d'un fichier Kickstart (pas les URL ni les paquetages)"],
+  ["ksverdiff -f RHELX -t RHELY","Compare les commandes Kickstart disponibles entre deux versions"],
+  ["url --url=\"http://...\"","Commande Kickstart : source d'installation réseau"],
+  ["autopart / clearpart --all","Partitionnement automatique / suppression des partitions existantes"],
+  ["rootpw --lock | --plaintext | --iscrypted","Verrouille ou définit le mot de passe root dans le fichier Kickstart"],
+  ["user --groups=wheel --name=... --password=...","Crée un utilisateur avec privilèges sudo lors de l'installation"],
+  ["%packages ... %end","Section listant paquetages, groupes (@groupe) et environnements (@^env) à installer"],
+  ["%pre / %post ... %end","Scripts exécutés avant partitionnement / après installation (chroot)"],
+  ["inst.ks=http://|ftp://|nfs:|hd:|cdrom:","Argument noyau indiquant l'emplacement du fichier Kickstart à Anaconda"],
+  ["/root/anaconda-ks.cfg","Fichier généré après chaque installation, bon point de départ pour un nouveau Kickstart"],
+  ["Ctrl+Alt+F1 / Ctrl+B N","Bascule vers le terminal tmux d'Anaconda / entre ses fenêtres de diagnostic"]
+ ],
+ pieges:["Dans RHEL 10, le compte root est désactivé par défaut : sans <code>rootpw</code> ni utilisateur <code>wheel</code> créé, le système peut devenir inaccessible en administration.","<code>ksvalidator</code> ne valide ni les URL, ni l'existence des paquetages/groupes, ni le contenu des scripts <code>%pre</code>/<code>%post</code>.","Les scripts <code>%pre</code> s'exécutent hors de l'environnement chroot (moins de commandes disponibles) ; les scripts <code>%post</code> s'exécutent dans le chroot mais ne peuvent pas copier depuis le support d'installation.","Un fichier Kickstart incomplet fait basculer Anaconda en mode interactif au lieu d'échouer silencieusement.","Exclure un paquetage avec <code>-nom</code> dans <code>%packages</code> n'empêche pas son installation s'il est requis comme dépendance obligatoire d'un autre paquetage demandé."]
+},
+{
+ id:"podman", cat:"deploiement", chap:"Chap. 17", titre:"Gestion de conteneurs avec Podman",
+ brief:"<strong>Podman</strong> est un moteur de conteneurs OCI sans démon (pas de point de défaillance unique ni de processus privilégié permanent), installé par défaut sur RHEL 10. Le cycle de vie standard est <code>podman pull</code> (télécharger une image), <code>podman run</code> (créer/démarrer un conteneur, <code>-d</code> pour le détacher, <code>-p</code> pour exposer un port, <code>--name</code> pour le nommer), <code>podman ps -a</code> (lister), <code>podman stop</code>/<code>rm</code> (arrêter/supprimer). Les images se construisent avec un <strong>Containerfile</strong> et <code>podman build</code>, se marquent avec <code>podman tag</code> et se publient avec <code>podman push</code> vers un registre (<code>registry.redhat.io</code>, Quay.io...).",
+ exemple:`$ podman login registry.lab.example.com:5000
+$ podman run -d --name my_webserver -p 8080:8080 registry.lab.example.com:5000/rhel10/httpd-24
+$ podman ps
+$ curl 127.0.0.1:8080
+$ podman stop my_webserver
+$ podman rm my_webserver`,
+ cmds:[
+  ["podman login REGISTRE","S'authentifie auprès d'un registre de conteneurs"],
+  ["podman search REGISTRE/terme","Recherche des images dans un registre"],
+  ["podman pull IMAGE[:TAG]","Télécharge une image depuis un registre vers le stockage local"],
+  ["podman run [-d] [-p HOTE:CONTENEUR] [--name NOM] IMAGE CMD","Crée et démarre un conteneur, en détaché et/ou avec port exposé"],
+  ["podman ps [-a]","Liste les conteneurs en cours (ou tous, y compris arrêtés) avec <code>-a</code>"],
+  ["podman stop / kill NOM|ID","Arrête proprement (SIGTERM) ou force l'arrêt (SIGKILL) d'un conteneur"],
+  ["podman rm [-f] NOM|ID","Supprime un conteneur arrêté (<code>-f</code> pour forcer sur un conteneur actif)"],
+  ["podman run --rm ...","Supprime automatiquement le conteneur à sa fin d'exécution"],
+  ["podman images / image list","Liste les images stockées localement"],
+  ["podman build -t NOM:TAG -f Containerfile .","Construit une image à partir d'un Containerfile"],
+  ["podman tag ID NOM:TAG","Attribue un nouveau nom/tag à une image existante"],
+  ["podman image push IMAGE REGISTRE/IMAGE","Envoie une image vers un registre distant"],
+  ["podman rmi ID / image prune","Supprime une image / nettoie les images sans tag ni référence"],
+  ["podman image inspect IMAGE --format \"{{.Champ}}\"","Inspecte les métadonnées JSON d'une image"]
+ ],
+ pieges:["Un conteneur qui termine sa commande s'arrête automatiquement mais n'est pas supprimé : <code>podman ps</code> ne le montre plus, il faut <code>podman ps -a</code> puis <code>podman rm</code>.","Par défaut on ne peut pas supprimer un conteneur en cours d'exécution sans l'option <code>-f</code>/<code>--force</code> (ou l'avoir arrêté au préalable).","Sans <code>--name</code>, Podman génère un nom aléatoire, ce qui complique la gestion du cycle de vie du conteneur.","<code>podman stop</code> attend 10 secondes avant d'envoyer un SIGKILL si le SIGTERM est ignoré ; utiliser <code>podman kill</code> pour un arrêt immédiat.","Sans l'option <code>-p</code>, le port du service à l'intérieur du conteneur n'est pas accessible depuis l'hôte, même si le conteneur tourne correctement."]
+},
+{
+ id:"mode-image", cat:"deploiement", chap:"Chap. 18", titre:"RHEL en mode image",
+ brief:"Le <strong>mode image</strong> (bootc) déploie et gère RHEL comme une image de conteneur amorçable : contrairement à un conteneur d'application (chapitre Podman), l'image de base <code>rhel-bootc</code> inclut noyau, chargeur de démarrage et systemd. Le workflow est compiler (Containerfile + <code>podman build</code>) → publier sur un registre → déployer (Kickstart avec <code>ostreecontainer --url=...</code> à la place de <code>%packages</code>, ou <code>bootc-image-builder</code> pour générer des images disque qcow2/vmdk/ami). Le système de fichiers racine est <strong>immuable</strong> (composefs/OSTree, lecture seule), seuls <code>/etc</code> (fusion à trois voies) et <code>/var</code> (non fusionné, état local persistant) restent modifiables ; toute mise à jour applicative passe par une nouvelle image et <code>bootc upgrade</code>, jamais par <code>dnf install</code> direct.",
+ exemple:`# Containerfile
+FROM registry.redhat.io/rhel10/rhel-bootc:latest
+RUN dnf -y install httpd && systemctl enable httpd
+COPY index.html /var/www/html/index.html
+$ podman build --squash -t registry.example.com/user/webserver-bootc:latest .
+$ podman push registry.example.com/user/webserver-bootc:latest
+# sur le système déployé
+$ sudo bootc status
+$ sudo bootc upgrade
+$ sudo systemctl reboot`,
+ cmds:[
+  ["podman build --squash -t IMAGE .","Compile une image bootc à partir d'un Containerfile (fusionne les couches)"],
+  ["podman push IMAGE","Publie l'image bootc sur le registre de conteneurs"],
+  ["ostreecontainer --url=REGISTRE/IMAGE (Kickstart)","Remplace la section <code>%packages</code> pour déployer une image bootc via Anaconda"],
+  ["bootc status","Affiche l'image démarrée, l'image en attente (staged) et l'image de restauration (rollback)"],
+  ["bootc upgrade (alias bootc update)","Récupère la dernière version de l'image depuis le registre pour le prochain démarrage"],
+  ["bootc switch --url=IMAGE","Change la référence d'image de conteneur suivie par le système"],
+  ["bootc rollback","Replace le déploiement précédent en première position au prochain démarrage"],
+  ["bootc-image-builder --type qcow2|vmdk|ami ...","Convertit une image bootc en image disque pour un environnement cible"],
+  ["systemctl mask bootc-fetch-apply-updates.timer","Désactive durablement la vérification automatique des mises à jour"],
+  ["virt-install --import --disk disk.qcow2 ...","Crée une VM KVM à partir d'une image disque générée par bootc-image-builder"]
+ ],
+ pieges:["Le système de fichiers racine (<code>/</code>) et <code>/usr</code> sont en lecture seule : <code>dnf install</code> échoue directement sur un système bootc, toute nouvelle application doit être ajoutée au Containerfile puis redéployée.","Contrairement à <code>/etc</code>, le contenu de <code>/var</code> n'est jamais mis à jour ni restauré automatiquement par <code>bootc upgrade</code> ou <code>bootc rollback</code> : les changements dans le Containerfile visant <code>/var</code> après l'installation initiale sont ignorés.","<code>bootc upgrade</code> ne fait qu'indexer la mise à jour pour le prochain démarrage : un redémarrage explicite reste nécessaire (sauf avec l'option <code>--apply</code>).","Les instructions Containerfile <code>ENTRYPOINT</code>, <code>CMD</code>, <code>ENV</code>, <code>EXPOSE</code> et <code>USER</code> n'ont aucun effet en mode image : les services démarrent via systemd et les ports se gèrent via le pare-feu.","Ne pas confondre le mode image (bootc, système d'exploitation entier amorçable) avec un conteneur d'application Podman classique : l'image de base doit dériver de <code>rhel-bootc</code>, jamais d'une image applicative standard."]
+},
+{
+ id:"revision2", cat:"deploiement", chap:"Chap. 19", titre:"Révision complète RH134",
+ brief:"Ce chapitre regroupe des ateliers de synthèse couvrant l'ensemble du cours RH134 : dépannage du démarrage et cibles systemd, gestion des systèmes de fichiers et du stockage (LVM, NFS, autofs), sécurité serveur (SELinux, firewalld, étiquetage de ports) et exécution de conteneurs avec Podman. L'objectif est de combiner ces compétences dans des scénarios réalistes proches de la certification RHCSA, en diagnostiquant et corrigeant des pannes plutôt qu'en découvrant de nouvelles notions.",
+ exemple:`# scénario type : serveur bloqué au démarrage après incident /etc/fstab
+$ systemctl reboot
+# shell emergency -> mot de passe redhat
+bash-5.2# mount -o remount,rw /
+bash-5.2# vi /etc/fstab   # corriger ou commenter la ligne fautive
+bash-5.2# systemctl daemon-reload
+bash-5.2# mount -a
+bash-5.2# systemctl reboot`,
+ cmds:[
+  ["grubby / systemctl get-default,isolate","Diagnostic et correction du démarrage et des cibles systemd (Chap. 12-13)"],
+  ["mount -a, systemctl daemon-reload","Correction d'un <code>/etc/fstab</code> erroné après un shell emergency"],
+  ["firewall-cmd --permanent --add-service|--add-port + --reload","Ouverture de services/ports pare-feu de façon persistante (Chap. 14)"],
+  ["semanage port -a -t TYPE -p tcp PORT","Étiquetage SELinux d'un port non standard (Chap. 14)"],
+  ["mount -t nfs / autofs (/etc/auto.master.d)","Accès au stockage réseau manuel ou à la demande (Chap. 15)"],
+  ["podman run -d -p ... --name ... / build / push","Exécution et publication de conteneurs avec Podman (Chap. 17)"]
+ ],
+ pieges:["Un ticket incident type (serveur bloqué au démarrage, erreur de montage) se résout toujours par la même séquence : shell emergency → remonter rw → corriger <code>fstab</code> → <code>daemon-reload</code> → <code>mount -a</code> → redémarrer.","Penser à vérifier à la fois le pare-feu (<code>firewall-cmd</code>) et SELinux (<code>semanage port</code>, <code>sealert</code>) quand un service refuse les connexions : les deux couches sont indépendantes.","Revenir systématiquement à l'utilisateur et à la machine de départ (souvent <code>student@workstation</code>) à la fin de chaque tâche d'atelier avant de lancer <code>lab grade</code>."]
+}
+];
+
+const CATS1 = [
  {id:'tous', label:'Tout'},
  {id:'debuter', label:'Prise en main'},
  {id:'fichiers', label:'Fichiers'},
@@ -567,6 +1125,21 @@ const CATS = [
  {id:'systeme', label:'Système en marche'},
  {id:'reseau', label:'Réseau'}
 ];
+const CATS2 = [
+ {id:'tous', label:'Tout'},
+ {id:'scripting', label:'Scripts & auto'},
+ {id:'journalisation', label:'Journalisation & sécu'},
+ {id:'fichiers-transferts', label:'Fichiers & transferts'},
+ {id:'stockage-perf', label:'Stockage & perf'},
+ {id:'demarrage', label:'Démarrage & récup'},
+ {id:'deploiement', label:'Déploiement & conteneurs'}
+];
+
+const LEVELS = {
+ 1:{course:'RH124', title:"Red Hat System Administration I (RH124)", data:N1, cats:CATS1, expressId:'express-1'},
+ 2:{course:'RH134', title:"Red Hat System Administration II (RH134)", data:N2, cats:CATS2, expressId:'express-2'}
+};
+let currentLevel = 1;
 let activeCat = 'tous';
 
 const list = document.getElementById('list');
@@ -575,6 +1148,8 @@ const empty = document.getElementById('empty');
 const tabsEl = document.getElementById('tabs');
 const catTitle = document.getElementById('cat-title');
 const catCount = document.getElementById('cat-count');
+const pageTitle = document.getElementById('page-title');
+const pageFooter = document.getElementById('page-footer');
 
 function el(tag, attrs, html){
   const e = document.createElement(tag);
@@ -599,7 +1174,7 @@ async function copyText(text, btn){
 }
 function stripTags(h){const d=document.createElement('div');d.innerHTML=h;return d.textContent;}
 
-N.forEach((n, i) => {
+function buildCard(n, i){
   const s = el('section', {class:'card', id:n.id, 'data-cat':n.cat});
   s.appendChild(el('span', {class:'chap'}, n.chap));
   s.appendChild(el('h2', null, (i+1) + '. ' + esc(n.titre)));
@@ -662,34 +1237,17 @@ N.forEach((n, i) => {
   }
 
   s.dataset.search = stripTags(n.titre + ' ' + n.chap + ' ' + n.brief + ' ' + n.exemple + ' ' + n.cmds.map(x=>x.join(' ')).join(' ') + ' ' + (n.pieges||[]).join(' ')).toLowerCase();
-  list.appendChild(s);
-
-  const a = el('a', {href:'#'+n.id, 'data-cat':n.cat}, '<span class="n">' + (i+1) + '</span>' + esc(n.titre));
-  a.dataset.target = n.id;
-  toc.appendChild(a);
-});
-
-// Onglets de catégorie
-CATS.forEach(cat => {
-  const count = cat.id === 'tous' ? N.length : N.filter(n => n.cat === cat.id).length;
-  const btn = el('button', {class:'tab' + (cat.id === 'tous' ? ' active' : ''), type:'button', role:'tab', 'data-cat':cat.id},
-    esc(cat.label) + '<span class="cnt">(' + count + ')</span>');
-  btn.addEventListener('click', () => setActiveCat(cat.id));
-  tabsEl.appendChild(btn);
-});
+  return s;
+}
 
 function setActiveCat(catId){
   activeCat = catId;
   tabsEl.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.cat === catId));
-  const cat = CATS.find(c => c.id === catId);
+  const cat = LEVELS[currentLevel].cats.find(c => c.id === catId);
   catTitle.textContent = catId === 'tous' ? 'Toutes les notions' : cat.label;
   applyFilter();
   document.getElementById('list').scrollIntoView({behavior:'smooth', block:'start'});
 }
-
-document.querySelectorAll('.express button.jump').forEach(btn => {
-  btn.addEventListener('click', () => setActiveCat(btn.dataset.cat));
-});
 
 const q = document.getElementById('q');
 let hadTerm = false;
@@ -729,7 +1287,56 @@ function applyFilter(){
   empty.style.display = shown ? 'none' : 'block';
 }
 
-applyFilter();
+function renderLevel(levelNum){
+  currentLevel = levelNum;
+  const lvl = LEVELS[levelNum];
+  activeCat = 'tous';
+  hadTerm = false;
+  q.value = '';
+
+  document.querySelectorAll('.level').forEach(b => b.classList.toggle('active', Number(b.dataset.level) === levelNum));
+  pageTitle.textContent = lvl.title;
+  pageFooter.textContent = 'Fiches établies à partir du support ' + lvl.course + ' (RHEL 10.0). Les commandes sont à tester sur un système de lab.';
+  document.getElementById('express-1').classList.toggle('hidden', lvl.expressId !== 'express-1');
+  document.getElementById('express-2').classList.toggle('hidden', lvl.expressId !== 'express-2');
+
+  list.innerHTML = '';
+  toc.innerHTML = '';
+  tabsEl.innerHTML = '';
+
+  lvl.data.forEach((n, i) => {
+    list.appendChild(buildCard(n, i));
+    const a = el('a', {href:'#'+n.id, 'data-cat':n.cat}, '<span class="n">' + (i+1) + '</span>' + esc(n.titre));
+    a.dataset.target = n.id;
+    toc.appendChild(a);
+  });
+
+  lvl.cats.forEach(cat => {
+    const count = cat.id === 'tous' ? lvl.data.length : lvl.data.filter(n => n.cat === cat.id).length;
+    const btn = el('button', {class:'tab' + (cat.id === 'tous' ? ' active' : ''), type:'button', role:'tab', 'data-cat':cat.id},
+      esc(cat.label) + '<span class="cnt">(' + count + ')</span>');
+    btn.addEventListener('click', () => setActiveCat(cat.id));
+    tabsEl.appendChild(btn);
+  });
+
+  catTitle.textContent = 'Toutes les notions';
+  applyFilter();
+}
+
+document.querySelectorAll('.express button.jump').forEach(btn => {
+  btn.addEventListener('click', () => setActiveCat(btn.dataset.cat));
+});
+
+document.querySelectorAll('.level').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const lvl = Number(btn.dataset.level);
+    if(lvl === currentLevel) return;
+    renderLevel(lvl);
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+});
+
+renderLevel(1);
 </script>
 </body>
 </html>
