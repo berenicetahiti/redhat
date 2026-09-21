@@ -623,7 +623,7 @@ Code de sortie: 0`,
  cmds:[
   ["VAR=valeur", "Définit une variable shell locale à la session courante (aucun espace autour du <code>=</code>)"],
   ["export VAR=valeur", "Définit et exporte une variable en tant que variable d'environnement pour les programmes enfants"],
-  ["unset VAR", "Supprime la définition d'une variable ou d'un alias"],
+  ["unset VAR", "Supprime la définition et l'exportation d'une variable (pour supprimer un alias, utilisez <code>unalias</code>, pas <code>unset</code>)"],
   ["export -n VAR", "Retire une variable des variables d'environnement sans la supprimer"],
   ["${VAR}", "Délimite explicitement le nom d'une variable pour éviter une expansion incorrecte"],
   ["${array[@]}", "Accède à tous les éléments d'un tableau (indexé à partir de 0)"],
@@ -656,7 +656,7 @@ $ grep -v '^#' /etc/hosts | grep -i server`,
   ["motif$", "Ancre le motif en fin de ligne"],
   [".", "Correspond à un seul caractère quelconque"],
   ["*", "L'élément précédent est répété zéro ou plusieurs fois"],
-  ["+ / ? (ERE)", "Une ou plusieurs fois / zéro ou une fois (nécessite <code>grep -E</code> en syntaxe de base)"],
+  ["+ / ? (ERE)", "Une ou plusieurs fois / zéro ou une fois (actifs sans échappement uniquement en syntaxe étendue, via <code>grep -E</code>)"],
   ["{n,m} / \\{n,m\\}", "Répète l'élément précédent entre n et m fois (ERE / BRE)"],
   ["[:alpha:], [:digit:], [:space:]", "Classes de caractères indépendantes des paramètres régionaux, à utiliser entre crochets doubles <code>[[:alpha:]]</code>"],
   ["grep -i motif fichier", "Recherche insensible à la casse"],
@@ -666,7 +666,7 @@ $ grep -v '^#' /etc/hosts | grep -i server`,
   ["grep -e m1 -e m2", "Combine plusieurs motifs avec un OU logique"],
   ["grep -E motif", "Utilise la syntaxe d'expression régulière étendue"]
  ],
- pieges:["Encadrer systématiquement une regex entre apostrophes pour empêcher le shell d'interpréter les métacaractères (<code>$</code>, <code>*</code>, <code>{}</code>) avant <code>grep</code>.","Le filtrage par motif du shell (globbing) et les expressions régulières partagent des métacaractères similaires (<code>*</code>, <code>?</code>) mais suivent des règles d'interprétation différentes : ne pas les confondre.","<code>grep</code>, <code>sed</code> et <code>vim</code> utilisent par défaut la syntaxe de base (BRE) où <code>+</code>, <code>?</code>, <code>|</code>, <code>{}</code> doivent être échappés avec <code>\\</code> pour être actifs ; sans l'option <code>-E</code>, ces caractères sont pris littéralement.","Une plage numérique mal formée comme <code>5-2</code> est invalide : le premier nombre doit toujours être inférieur ou égal au second."]
+ pieges:["Encadrer systématiquement une regex entre apostrophes pour empêcher le shell d'interpréter les métacaractères (<code>$</code>, <code>*</code>, <code>{}</code>) avant <code>grep</code>.","Le filtrage par motif du shell (globbing) et les expressions régulières partagent des métacaractères similaires (<code>*</code>, <code>?</code>) mais suivent des règles d'interprétation différentes : ne pas les confondre.","<code>grep</code>, <code>sed</code> et <code>vim</code> utilisent par défaut la syntaxe de base (BRE) où <code>+</code>, <code>?</code>, <code>|</code>, <code>{}</code> doivent être échappés avec <code>\\</code> pour être actifs ; sans l'option <code>-E</code>, ces caractères sont pris littéralement.","Les métacaractères <code>^</code>, <code>$</code> et <code>*</code> présentent aussi de légères différences de comportement entre syntaxe de base et étendue, au-delà des seuls caractères <code>| + ? ( ) { }</code>."]
 },
 {
  id:"cron-user", cat:"scripting", chap:"Chap. 3", titre:"Planification de tâches utilisateur",
@@ -814,7 +814,7 @@ $ ls -lh /root/etcbackup.tar.gz`,
 {
  id:"transfert", cat:"fichiers-transferts", chap:"Chap. 8", titre:"Transfert de fichiers",
  brief:"<code>sftp</code> ouvre une session interactive sécurisée (<code>put</code>/<code>get</code>, <code>-r</code> pour la récursivité, <code>lcd</code>/<code>lpwd</code> pour le côté local) tandis que <code>scp</code> copie en une seule commande non interactive ; depuis RHEL 10, <code>scp</code> s'appuie en interne sur le protocole SFTP, l'ancien protocole SCP restant accessible via <code>-O</code> mais pouvant être désactivé (<code>/etc/ssh/disable_scp</code>). La commande <code>rsync</code> synchronise en ne transférant que les différences, avec le <strong>mode Archive</strong> (<code>-a</code>) qui préserve récursivité, permissions, horodatages et propriété — sans les liens matériels (<code>-H</code>) ni les ACL/SELinux (<code>-A</code>/<code>-X</code>).",
- exemple:`$ sftp student@serverb
+ exemple:`$ sudo sftp student@serverb
 sftp> lcd /home/student/backup
 sftp> put -r /etc/ssh
 sftp> exit
@@ -951,7 +951,7 @@ $ systemctl reboot`,
 },
 {
  id:"recup-root", cat:"demarrage", chap:"Chap. 13", titre:"Récupération de l'accès super utilisateur",
- brief:"Deux méthodes permettent de réinitialiser le mot de passe root : démarrer sur un <strong>support de secours</strong> (image <code>boot.iso</code>, option recommandée) et faire un <code>chroot /mnt/sysroot</code>, ou passer <code>init=/bin/bash</code> au noyau depuis GRUB2 sans support externe. Dans les deux cas, il faut remonter la racine en lecture/écriture avant <code>passwd</code>, puis créer <code>/.autorelabel</code> pour forcer un réétiquetage SELinux complet au redémarrage, car <code>passwd</code> recrée <code>/etc/shadow</code> sans contexte SELinux.",
+ brief:"Deux méthodes permettent de réinitialiser le mot de passe root : démarrer sur un <strong>support de secours</strong> (image <code>boot.iso</code>, option recommandée) et faire un <code>chroot /mnt/sysroot</code>, ou passer <code>init=/bin/bash</code> au noyau depuis GRUB2 sans support externe. Avec le support de secours, le choix <em>Continue</em> du menu de récupération monte déjà le système en lecture/écriture sous <code>/mnt/sysroot</code> ; avec <code>init=/bin/bash</code>, la racine est montée en lecture seule et il faut la remonter (<code>mount -o remount,rw /</code>) avant <code>passwd</code>. Dans les deux cas, il faut ensuite créer <code>/.autorelabel</code> pour forcer un réétiquetage SELinux complet au redémarrage, car <code>passwd</code> recrée <code>/etc/shadow</code> sans contexte SELinux.",
  exemple:`# Méthode sans support de secours : interrompre GRUB2 (Esc), éditer l'entrée (E)
 # supprimer les options console=, ajouter en fin de ligne : init=/bin/bash
 # puis Ctrl+X pour démarrer
@@ -1015,7 +1015,7 @@ $ systemctl enable --now autofs`,
   ["dnf install nfs-utils","Installe les outils client/serveur NFS nécessaires au montage"],
   ["showmount --exports SERVEUR","Liste les exports disponibles sur un serveur NFSv3 (RPC)"],
   ["mount -t nfs SERVEUR:/export POINT","Monte manuellement une exportation NFS (temporaire)"],
-  ["mount SERVEUR:/export POINT nfs rw 0 0 (dans /etc/fstab)","Monte une exportation NFS de façon persistante au démarrage"],
+  ["SERVEUR:/export POINT nfs rw 0 0 (ligne dans /etc/fstab)","Monte une exportation NFS de façon persistante au démarrage (après <code>systemctl daemon-reload</code> et <code>mount POINT</code>)"],
   ["umount POINT","Démonte un système de fichiers NFS"],
   ["lsof POINT","Identifie les processus qui empêchent le démontage d'un point"],
   ["dnf install autofs","Installe le service de montage automatique"],
@@ -1025,7 +1025,7 @@ $ systemctl enable --now autofs`,
   ["systemctl enable --now autofs","Active et démarre le service de montage automatique"],
   ["x-systemd.automount (option fstab)","Alternative à autofs : montage à la demande géré nativement par systemd"]
  ],
- pieges:["Le montage via <code>/etc/fstab</code> peut ralentir ou bloquer le démarrage si le réseau ou le serveur NFS est indisponible, contrairement à <code>autofs</code> qui monte à la demande.","<code>autofs</code> n'est pas monté au démarrage : le système de fichiers n'apparaît qu'au premier accès au point de montage.","Un montage indirect ne prend en charge qu'un point de montage relatif (nom simple), un montage direct exige un chemin absolu complet.","Si le serveur exporte en lecture seule, le client obtient un accès lecture seule même en demandant <code>rw</code> dans les options de montage.","Après modification de <code>/etc/fstab</code> ou des fichiers de carte <code>autofs</code>, il faut recharger la configuration (<code>systemctl daemon-reload</code> ou redémarrer <code>autofs</code>) pour que les changements prennent effet."]
+ pieges:["Le montage via <code>/etc/fstab</code> peut ralentir ou bloquer le démarrage si le réseau ou le serveur NFS est indisponible, contrairement à <code>autofs</code> qui monte à la demande.","<code>autofs</code> n'est pas monté au démarrage : le système de fichiers n'apparaît qu'au premier accès au point de montage.","Un montage indirect ne prend en charge qu'un point de montage relatif (nom simple), un montage direct exige un chemin absolu complet.","Si le serveur exporte en lecture seule, le client obtient un accès lecture seule même en demandant <code>rw</code> dans les options de montage.","Après modification de <code>/etc/fstab</code>, il faut <code>systemctl daemon-reload</code> (pour régénérer les unités de montage) avant <code>mount -a</code> ; après modification des fichiers de carte <code>autofs</code> (<code>/etc/auto.master.d</code>, <code>/etc/auto.*</code>), il faut redémarrer le service <code>autofs</code> (<code>systemctl restart autofs</code>), <code>daemon-reload</code> n'ayant aucun effet sur ces fichiers."]
 },
 {
  id:"install-rhel", cat:"deploiement", chap:"Chap. 16", titre:"Installation de Red Hat Enterprise Linux",
@@ -1059,7 +1059,7 @@ $ sudo cp kickstart.cfg /var/www/html/
   ["/root/anaconda-ks.cfg","Fichier généré après chaque installation, bon point de départ pour un nouveau Kickstart"],
   ["Ctrl+Alt+F1 / Ctrl+B N","Bascule vers le terminal tmux d'Anaconda / entre ses fenêtres de diagnostic"]
  ],
- pieges:["Dans RHEL 10, le compte root est désactivé par défaut : sans <code>rootpw</code> ni utilisateur <code>wheel</code> créé, le système peut devenir inaccessible en administration.","<code>ksvalidator</code> ne valide ni les URL, ni l'existence des paquetages/groupes, ni le contenu des scripts <code>%pre</code>/<code>%post</code>.","Les scripts <code>%pre</code> s'exécutent hors de l'environnement chroot (moins de commandes disponibles) ; les scripts <code>%post</code> s'exécutent dans le chroot mais ne peuvent pas copier depuis le support d'installation.","Un fichier Kickstart incomplet fait basculer Anaconda en mode interactif au lieu d'échouer silencieusement.","Exclure un paquetage avec <code>-nom</code> dans <code>%packages</code> n'empêche pas son installation s'il est requis comme dépendance obligatoire d'un autre paquetage demandé."]
+ pieges:["Dans RHEL 10, le compte root est désactivé par défaut : sans <code>rootpw</code> ni utilisateur <code>wheel</code> créé, le système peut devenir inaccessible en administration.","<code>ksvalidator</code> ne valide ni les URL, ni l'existence des paquetages/groupes, ni le contenu des scripts <code>%pre</code>/<code>%post</code>.","Les scripts <code>%pre</code> s'exécutent hors de l'environnement chroot (moins de commandes disponibles) ; les scripts <code>%post</code> s'exécutent dans le chroot mais ne peuvent pas copier depuis le support d'installation.","Un fichier Kickstart incomplet ne provoque pas toujours une bascule en mode interactif : selon la valeur manquante, Anaconda peut soit demander la réponse à l'utilisateur, soit interrompre complètement l'installation.","Exclure un paquetage avec <code>-nom</code> dans <code>%packages</code> n'empêche pas son installation s'il est requis comme dépendance obligatoire d'un autre paquetage demandé."]
 },
 {
  id:"podman", cat:"deploiement", chap:"Chap. 17", titre:"Gestion de conteneurs avec Podman",
@@ -1107,9 +1107,9 @@ $ sudo systemctl reboot`,
   ["ostreecontainer --url=REGISTRE/IMAGE (Kickstart)","Remplace la section <code>%packages</code> pour déployer une image bootc via Anaconda"],
   ["bootc status","Affiche l'image démarrée, l'image en attente (staged) et l'image de restauration (rollback)"],
   ["bootc upgrade (alias bootc update)","Récupère la dernière version de l'image depuis le registre pour le prochain démarrage"],
-  ["bootc switch --url=IMAGE","Change la référence d'image de conteneur suivie par le système"],
+  ["bootc switch IMAGE","Change la référence d'image de conteneur suivie par le système (redémarrage nécessaire pour appliquer le changement)"],
   ["bootc rollback","Replace le déploiement précédent en première position au prochain démarrage"],
-  ["bootc-image-builder --type qcow2|vmdk|ami ...","Convertit une image bootc en image disque pour un environnement cible"],
+  ["podman run --privileged ... bootc-image-builder --type qcow2|vmdk|ami ...","Convertit une image bootc en image disque pour un environnement cible (s'exécute via Podman, pas comme paquetage RPM installé localement)"],
   ["systemctl mask bootc-fetch-apply-updates.timer","Désactive durablement la vérification automatique des mises à jour"],
   ["virt-install --import --disk disk.qcow2 ...","Crée une VM KVM à partir d'une image disque générée par bootc-image-builder"]
  ],
